@@ -1,0 +1,19 @@
+﻿@model DL.Web.ViewModels.Account.RegisterViewModel
+
+@{
+    ViewBag.Title = "註冊成功";
+    ViewBag.SubTitle = "帳號需等待管理員啟動，才能登入。";
+}
+
+<h3>@ViewBag.Title</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <h4 style="color:red">@ViewBag.SubTitle</h4>
+    <hr />
+}
+
+<div>
+    @Html.ActionLink("登入畫面", "Login", null, new { @class = "btn btn-default" })
+</div>

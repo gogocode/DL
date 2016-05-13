@@ -1,0 +1,12 @@
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\DL.Models.dll.config
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\DL.Models.dll
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\DL.Models.pdb
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\EntityFramework.dll
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\EntityFramework.SqlServer.dll
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\EntityFramework.xml
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\EntityFramework.SqlServer.xml
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\zh-Hans\EntityFramework.resources.dll
+D:\for GitHub\DL\DL\DL.Models\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\for GitHub\DL\DL\DL.Models\obj\Debug\DL.Models.csprojResolveAssemblyReference.cache
+D:\for GitHub\DL\DL\DL.Models\obj\Debug\DL.Models.dll
+D:\for GitHub\DL\DL\DL.Models\obj\Debug\DL.Models.pdb

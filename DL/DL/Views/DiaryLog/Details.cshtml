@@ -1,0 +1,73 @@
+﻿@using DL.ViewModels.DiaryLog
+@model DiaryLogViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<br />
+<br />
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogItem)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogItem)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogContents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogContents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogSituation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogSituation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogSolve)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogSolve)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("編輯", "Edit", new { id = Model.DiaryLogId }, new { @class = "btn btn-primary" }) 
+    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+</p>

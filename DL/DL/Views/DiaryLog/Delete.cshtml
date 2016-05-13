@@ -1,0 +1,79 @@
+﻿@using DL.ViewModels.DiaryLog
+@model DiaryLogViewModel
+
+@{
+    ViewBag.Title = "確定刪除該筆資料?";
+}
+
+<div>
+    
+    <h4 style="color:red"> @ViewBag.Title</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogItem)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogItem)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogContents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogContents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogHours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogSituation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogSituation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaryLogSolve)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaryLogSolve)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="刪除" class="btn btn-danger" /> 
+            @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

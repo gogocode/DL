@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DiaryLogDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="DiaryLog">
+    <Key>
+      <PropertyRef Name="DiaryLogId" />
+    </Key>
+    <Property Name="DiaryLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="DiaryLogDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DiaryLogItem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DiaryLogContents" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DiaryLogStatus" Type="Boolean" Nullable="false" />
+    <Property Name="DiaryLogHours" Type="Int32" Nullable="false" />
+    <Property Name="DiaryLogSituation" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="DiaryLogSolve" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="CreateId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="Self.FK_DiaryLog_DiaryLog" FromRole="DiaryLog" ToRole="User" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserAccount" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserPassword" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreateId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdateId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="DiaryLog" Relationship="Self.FK_DiaryLog_DiaryLog" FromRole="User" ToRole="DiaryLog" />
+  </EntityType>
+  <Association Name="FK_DiaryLog_DiaryLog">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="DiaryLog" Type="Self.DiaryLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="DiaryLog">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DiaryLogDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DiaryLog" EntityType="Self.DiaryLog" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="FK_DiaryLog_DiaryLog" Association="Self.FK_DiaryLog_DiaryLog">
+      <End Role="User" EntitySet="User" />
+      <End Role="DiaryLog" EntitySet="DiaryLog" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

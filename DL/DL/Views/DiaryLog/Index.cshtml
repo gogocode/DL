@@ -1,0 +1,188 @@
+﻿@using DL.ViewModels.DiaryLog
+@model DiaryLogSearchViewModel
+
+@{
+    ViewBag.Title = "輸入查詢條件";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#dateStart').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+        $('#dateEnd').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+    })
+</script>
+
+<br />
+<h4><strong>@ViewBag.Title</strong></h4>
+
+@using (Html.BeginForm("Index", "DiaryLog", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "diaryLogFrom", @class = "form-inline", role = "form" }))
+{
+
+    <div class="form-group">
+        <label class="sr-only" for="name">日期起</label>
+        @Html.TextBox("dateStart", "", new { @placeholder = "請輸入日期起", @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label class="sr-only" for="inputfile">日期迄</label>
+        @Html.TextBox("dateEnd", "", new { @placeholder = "請輸入日期迄", @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label class="sr-only" for="inputfile">內容</label>
+        @Html.TextBox("content", "", new { @placeholder = "請輸入內容", @class = "form-control" })
+    </div>
+        <input type="submit" value="查詢" class="btn btn-default" />
+    <br />
+    <br />
+
+    <a href="/DiaryLog/Create" class = "btn btn-primary" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
+
+    if (Model.DiaryLogGroupByDates != null && Model.DiaryLogGroupByDates.Count() > 0)
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="50px">
+                        @Html.DisplayName("序號")
+                    </th>
+                    <th width="50px"></th>
+                    <th>
+                        @Html.DisplayName("時間")
+                    </th>
+                    <th>
+                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int i = 0;}
+                @foreach (var item in Model.DiaryLogGroupByDates)
+                {
+                    <tr>
+                        <td>
+                            @(++i+(Model.DiaryLogGroupByDates.PageSize * (Model.DiaryLogGroupByDates.PageNumber - 1)))
+                        </td>
+                        <td>
+                            <a href="#tr@(i)" class="btn btn-info">開</a>
+                        </td>
+                        <td>
+                            @String.Format("{0:d}", item.DiaryLogDate)
+                        </td>
+                        <td>
+                            <div id="tr@(i)" style="display:none;">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>@Html.DisplayName("項目")</th>
+                                            <th>@Html.DisplayName("內容")</th>
+                                            <th>@Html.DisplayName("狀態")</th>
+                                            <th>@Html.DisplayName("時數")</th>
+                                            <th>@Html.DisplayName("狀況")</th>
+                                            <th>@Html.DisplayName("如何解決")</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var d in item.DiaryLogs)
+                                        {
+                                            if (d.DiaryLogContents != null && d.DiaryLogContents.Length > 20)
+                                            {
+                                                d.DiaryLogContents = d.DiaryLogContents.Substring(0, 20) + "...";
+                                            }
+                                            if (d.DiaryLogSituation != null && d.DiaryLogSituation.Length > 20)
+                                            {
+                                                d.DiaryLogSituation = d.DiaryLogSituation.Substring(0, 20) + "...";
+                                            }
+                                            if (d.DiaryLogSolve != null && d.DiaryLogSolve.Length > 20)
+                                            {
+                                                d.DiaryLogSolve = d.DiaryLogSolve.Substring(0, 20) + "...";
+                                            }
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => d.DiaryLogItem)</td>
+                                                <td>@Html.DisplayFor(modelItem => d.DiaryLogContents)</td>
+                                                <td>@Html.DisplayFor(modelItem => d.DiaryLogStatus)</td>
+                                                <td>@Html.DisplayFor(modelItem => d.DiaryLogHours)</td>
+                                                <td>@Html.DisplayFor(modelItem => d.DiaryLogSituation)</td>
+                                                <td>@Html.DisplayFor(modelItem => d.DiaryLogSolve)</td>
+                                                <td>
+                                                    <a class="btn btn-primary" href="/DiaryLog/Edit/@d.DiaryLogId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
+                                                    <a class="btn btn-info" href="/DiaryLog/Details/@d.DiaryLogId"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>明細</a>
+                                                    <a class="btn btn-danger" href="/DiaryLog/Delete/@d.DiaryLogId"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>刪除</a>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="pager">
+            @Html.Pager(Model.DiaryLogGroupByDates.PageSize, Model.DiaryLogGroupByDates.PageNumber, Model.DiaryLogGroupByDates.TotalItemCount)
+        </div>
+                        }
+                    }
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(function () {
+
+            // Fields
+            var _pageLinkers = $(".pager> a");
+
+            // Binding click event
+            _pageLinkers.each(function (i, item) {
+                var page = getParameterByName($(item).attr('href'), 'page')
+                $(item).attr('href', '#').click(function () { postPage(page); });
+            });
+
+        });
+
+        function postPage(page) {
+            var targetFormID = '#diaryLogFrom';
+            if ($(targetFormID).size() > 0) {
+                $('<input>')
+                    .attr({ type: 'hidden', id: 'page', name: 'page', value: page })
+                    .appendTo($(targetFormID));
+                $(targetFormID).submit();
+            }
+        };
+
+        function getParameterByName(url, name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(url);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+
+
+
+        $(function () {
+            //+展開 -收合
+            $("a").click(function () {
+                var _this = $(this).attr("href");
+                if ($(_this).css("display") == "none") {
+                    $(_this).slideDown();
+                    $(this).html("收");
+                } else {
+                    $(_this).slideUp();
+                    $(this).html("開");
+                }
+                return false;
+            });
+        });
+
+    </script>
+}
+
+

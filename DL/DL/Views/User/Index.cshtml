@@ -1,0 +1,128 @@
+﻿@using DL.Web.ViewModels.User
+@model UserIndexViewModel
+
+@{
+    ViewBag.Title = "輸入查詢條件";
+}
+
+<br />
+<h4><strong>@ViewBag.Title</strong></h4>
+
+@using (Html.BeginForm("Index", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "userFrom", @class = "form-inline", role = "form" }))
+{
+    <div class="form-group">
+        <label class="sr-only" for="inputfile">員工編號</label>
+        @Html.TextBox("UserAccount", "", new { @placeholder = "請輸入員工編號", @class = "form-control" })
+    </div>
+    <input type="submit" value="查詢" class="btn btn-default" />
+    <br />
+    <br />
+
+    if (Model.Users != null && Model.Users.Count() > 0)
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("序號")  
+                    </th>
+                    <th>
+                        @Html.DisplayName("員工編號")
+                    </th>
+                    <th>
+                        @Html.DisplayName("姓名")
+                    </th>
+                    <th>
+                        @Html.DisplayName("電子郵件")
+                    </th>
+                    <th>
+                        @Html.DisplayName("帳號是否啟動")
+                    </th>
+                    <th>
+                        @Html.DisplayName("啟動帳號")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int i = 0;}
+                @foreach (var item in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            @(++i + (Model.Users.PageSize * (Model.Users.PageNumber - 1)))
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserAccount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserEmail)
+                        </td>
+                        <td>
+                            @if (item.UserStatus == "1")
+                        {
+                                @("已啟動")
+                            }
+                            else
+                            {
+                                @("未啟動")
+                            }
+                        </td>
+
+                        @if (item.UserStatus != "1")
+                        {
+                            <td>
+                                <a class="btn btn-info" href="/User/StartUp/@item.UserId"><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>啟動</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <a class="btn btn-primary" href="/User/Edit/@item.UserId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
+                                <a class="btn btn-danger" href="/User/Delete/@item.UserId"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>刪除</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="pager">
+            @Html.Pager(Model.Users.PageSize, Model.Users.PageNumber, Model.Users.TotalItemCount)
+        </div>
+                        }
+                    }
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            // Fields
+            var _pageLinkers = $(".pager> a");
+
+            // Binding click event
+            _pageLinkers.each(function (i, item) {
+                var page = getParameterByName($(item).attr('href'), 'page')
+                $(item).attr('href', '#').click(function () { postPage(page); });
+            });
+        });
+
+        function postPage(page) {
+            var targetFormID = '#userFrom';
+            if ($(targetFormID).size() > 0) {
+                $('<input>')
+                    .attr({ type: 'hidden', id: 'page', name: 'page', value: page })
+                    .appendTo($(targetFormID));
+                $(targetFormID).submit();
+            }
+        };
+
+        function getParameterByName(url, name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(url);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+    </script>
+}

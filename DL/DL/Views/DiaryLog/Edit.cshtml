@@ -1,0 +1,98 @@
+﻿@using DL.ViewModels.DiaryLog
+@model DiaryLogViewModel
+
+@{
+    ViewBag.Title = "編輯";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#diaryLogDate').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+    })
+</script>
+<br />
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>工作日誌編輯</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DiaryLogId)
+        @Html.HiddenFor(model => model.UserId)
+        @Html.HiddenFor(model => model.CreateId)
+        @Html.HiddenFor(model => model.CreateDate)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiaryLogDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DiaryLogDate, new { htmlAttributes = new { id = "diaryLogDate", @placeholder = "必填欄位", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiaryLogDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiaryLogItem, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DiaryLogItem, new { htmlAttributes = new { @placeholder = "必填欄位", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiaryLogItem, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiaryLogContents, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea id="DiaryLogContents" name="DiaryLogContents" placeholder="必填欄位" rows="5" class="form-control">@Model.DiaryLogContents</textarea>
+                @Html.ValidationMessageFor(model => model.DiaryLogContents, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiaryLogStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.DiaryLogStatus)
+                    @Html.ValidationMessageFor(model => model.DiaryLogStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiaryLogHours, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DiaryLogHours, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiaryLogHours, "", new { @placeholder = "必填欄位", @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiaryLogSituation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea id="DiaryLogSituation" name="DiaryLogSituation"  rows="5"  class="form-control">@Model.DiaryLogSituation</textarea>
+                @Html.ValidationMessageFor(model => model.DiaryLogSituation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiaryLogSolve, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea id="DiaryLogSolve" name="DiaryLogSolve"  rows="5" class="form-control">@Model.DiaryLogSolve</textarea>
+                @Html.ValidationMessageFor(model => model.DiaryLogSolve, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="儲存" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+</div>

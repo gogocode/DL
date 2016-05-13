@@ -1,0 +1,12 @@
+﻿
+@if(Session["Id"] != null && Session["Account"] != null)
+{ 
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="" style="color:white;" title="員工編號"><span class="glyphicon glyphicon-user" aria-hidden="false"></span>員工編號:@Session["Account"].ToString()</a>
+        </li>
+        <li>
+            <a href="/Account/Logout" id="logoutLink" style="color:white;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>登出</a>
+        </li>
+    </ul>
+}
