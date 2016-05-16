@@ -1,0 +1,109 @@
+﻿@using DL.Web.ViewModels.DiaryLogNew
+@model DiaryLogNewEditViewModel
+
+@{
+    ViewBag.Title = "編輯";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#diaryLogDate').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+    })
+
+</script>
+
+<script type="text/javascript">
+
+    // 新增明細的Partial View, 附加到 table
+    $(function () {
+        $("#addDetailBtn").click(function () {
+            $.get('/DiaryLogNew/GetDetailPartialView', function (template) {
+                $("#TextBoxesGroup").append(template);
+                event.preventDefault();
+            });
+        });
+    });
+
+    function deleteDetail(id) {
+        if (confirm('確定刪除？')) {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("DeleteADetail", "DiaryLogNew")',
+                data: JSON.stringify({ "actdetailNo": id }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg) {
+                        window.location.reload();
+                    } else {
+                        alert("刪除失敗");
+                    }
+                },
+                error: function (xhr, ajaxOptions, Error) {
+                    alert(Error);
+                }
+            });
+            event.preventDefault();
+        }
+        else {
+            event.preventDefault();
+        }
+    }
+
+
+</script>
+
+<br />
+
+@using (Html.BeginForm("Edit", "DiaryLogNew", FormMethod.Post, new { @id = "editForm" }))
+{
+    @Html.AntiForgeryToken()
+    <h3 class="microsoft-font">工作日誌</h3>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-1" for="name">員工編號</label>
+                <label class="col-md-2 label-info" for="name">@Model.UserAccount</label>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-1" for="name">姓名</label>
+                <label class="col-md-2 label-info" for="name">@Model.UserName</label>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-1" for="name">時間</label>
+                <label class="col-md-2 label-info" for="name"> @string.Format("{0:d}", Model.DiaryLogDate) </label>
+                @Html.HiddenFor(m => m.DiaryLogDate)
+            </div>
+        </div>
+
+        <a id="addDetailBtn" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
+            <br />
+            <table id='TextBoxesGroup' class="table table-striped" style="font-size:12px">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>項目</th>
+                        <th>內容</th>
+                        <th>狀態</th>
+                        <th>時數</th>
+                        <th>狀況</th>
+                        <th>是否解決</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.DiaryLogs)
+                {
+                    @Html.Partial("_DiaryLogEditDetailPartialView", item)
+                }
+            </table>
+
+            <div class="form-group">
+                <input type="submit" class="col-md-offset-11 btn btn-primary" onclick="ExecuteSubmit();" value="送出" />
+            </div>
+}
+
+<div>
+    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+</div>

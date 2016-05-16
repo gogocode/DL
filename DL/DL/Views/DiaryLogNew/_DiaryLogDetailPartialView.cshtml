@@ -1,0 +1,31 @@
+﻿@model DL.Models.DiaryLog
+<tr>
+    @using (Html.BeginCollectionItem("DiaryLogs"))
+    {
+        <td style="width:0">
+            @{System.Web.Mvc.MvcHtmlString UserId = @Html.IdFor(m => Model.UserId);}
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.DiaryLogItem, new { @class = "text-box single-line", @style = "width:120px" })
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.DiaryLogContents, new { @class = "text-box single-line", @style = "width:180px" })
+        </td>
+        <td>
+            @Html.CheckBoxFor(m => m.DiaryLogStatus, new { @class = "checkbox-inline", @style = "width:60px" }) 
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.DiaryLogHours, new { @class = "text-box single-line", @style = "width:40px", @type = "number" })
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.DiaryLogSituation, new { @class = "text-box single-line", @style = "width:180px" })
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.DiaryLogSolve, new { @class = "text-box single-line", @style = "width:180px" })
+        </td>
+        <td>
+            <button class="btn btn-danger" onclick="$(this).parents('tr').remove(); event.preventDefault();">刪除</button>
+        </td>
+
+                }
+</tr>

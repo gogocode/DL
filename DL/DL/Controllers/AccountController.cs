@@ -77,7 +77,9 @@ namespace DL.Web.Controllers
                     return RedirectToAction("Index","User");
                 }
 
-                return RedirectToAction("Index", "DiaryLog");
+                //return RedirectToAction("Index", "DiaryLog");
+
+                return RedirectToAction("Index", "DiaryLogNew");
             }
         }
 

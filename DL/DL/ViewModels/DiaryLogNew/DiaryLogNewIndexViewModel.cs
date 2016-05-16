@@ -1,0 +1,24 @@
+﻿using MvcPaging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace DL.Web.ViewModels.DiaryLogNew
+{
+    public class DiaryLogNewIndexViewModel
+    {
+        public DiaryLogNewIndexViewModel()
+        {
+            Page = 0;
+        }
+
+        public DateTime? dateStart { get; set; }  // 搜尋條件1
+
+        public DateTime? dateEnd { get; set; }  // 搜尋條件2
+
+        public IPagedList<DateTime> DiaryLogDate { get; set; }  // 符合條件資料
+
+        public int Page { get; set; } //頁碼
+    }
+}
