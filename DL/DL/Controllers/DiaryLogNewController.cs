@@ -1,6 +1,7 @@
 ﻿using DL.Models;
 using DL.Models.Repository;
 using DL.Web.ActionFilter;
+using DL.Web.Controllers.Base;
 using DL.Web.ViewModels.DiaryLogNew;
 using MvcPaging;
 using System;
@@ -11,7 +12,7 @@ using System.Web.Mvc;
 
 namespace DL.Web.Controllers
 {
-    public class DiaryLogNewController : Controller
+    public class DiaryLogNewController : BaseController
     {
         GenericRepository<DiaryLog> _genericRepository = null;
         GenericRepository<User> _userRepository = null;

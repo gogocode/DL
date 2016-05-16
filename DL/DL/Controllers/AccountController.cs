@@ -12,6 +12,7 @@ using AutoMapper;
 using DL.Models;
 using DL.Models.Repository;
 using DL.Web.ActionFilter;
+using DL.Web.Controllers.Base;
 using DL.Web.Services;
 using DL.Web.ViewModels.Account;
 using System;
@@ -23,7 +24,7 @@ using System.Web.Security;
 
 namespace DL.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         GenericRepository<User> _genericRepository = null;
         AccountService _service = null;
