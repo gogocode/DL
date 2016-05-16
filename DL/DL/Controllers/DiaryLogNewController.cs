@@ -1,5 +1,6 @@
 ﻿using DL.Models;
 using DL.Models.Repository;
+using DL.Web.ActionFilter;
 using DL.Web.ViewModels.DiaryLogNew;
 using MvcPaging;
 using System;
@@ -25,12 +26,9 @@ namespace DL.Web.Controllers
         #region Search
 
         [HttpGet]
+        [CheckSessionAcitionFilter]
         public ActionResult Index()
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
             IQueryable<DiaryLog> diaryLogs = _genericRepository.GetAll();
             int userId = Convert.ToInt32(Session["Id"].ToString());
@@ -61,13 +59,9 @@ namespace DL.Web.Controllers
         #region Edit
 
         [HttpGet]
+        [CheckSessionAcitionFilter]
         public ActionResult Edit(string strDate)
         {
-
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
             DateTime date = Convert.ToDateTime(strDate);
 
@@ -85,12 +79,9 @@ namespace DL.Web.Controllers
         }
 
         [HttpPost]
+        [CheckSessionAcitionFilter]
         public ActionResult Edit(DiaryLogNewEditViewModel diaryLogNewEidts)
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
             DateTime diaryLogDate = diaryLogNewEidts.DiaryLogDate;
 
@@ -140,12 +131,9 @@ namespace DL.Web.Controllers
         #region Create
 
         [HttpGet]
+        [CheckSessionAcitionFilter]
         public ActionResult Create()
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
             int userAccount = Convert.ToInt32(Session["Account"].ToString());
             int userId = Convert.ToInt32(Session["Id"].ToString());
@@ -159,12 +147,9 @@ namespace DL.Web.Controllers
         }
 
         [HttpPost]
+        [CheckSessionAcitionFilter]
         public ActionResult Create(DiaryLogNewCreateViewModel model)
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
             if (model.DiaryLogs == null || model.DiaryLogDate == null)
             {
@@ -218,20 +203,5 @@ namespace DL.Web.Controllers
             return Json(result);
         }
 
-        
-
-        #region Private Methods
-
-        private bool IsSessionExist()
-        {
-            if (Session["Id"] == null || Session["Account"] == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        #endregion
     }
 }
