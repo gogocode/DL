@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DL.Models.Service.Users
 {
-    public class ValidateLoginSV
+    public class ValidateLoginSM
     {
         public int LoginStatus { get; set; }
 

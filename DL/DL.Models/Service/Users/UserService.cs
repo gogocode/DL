@@ -50,13 +50,13 @@ namespace DL.Models.Service.Users
         /// <param name="userAccount">登入帳號</param>
         /// <param name="userPassword">登入密碼</param>
         /// <returns>loginStatus為0 帳號或密碼輸入錯誤 loginStatus為1 帳號未啟動 loginStatus為2 登入正常</returns>
-        public ValidateLoginSV ValidateLogin(string userAccount, string userPassword)
+        public ValidateLoginSM ValidateLogin(string userAccount, string userPassword)
         {
 
             //驗證
             //檢查 Username, Password 是否正確
             User user = GetUser( userAccount,  userPassword);
-            ValidateLoginSV validateLoginSV = new ValidateLoginSV();
+            ValidateLoginSM validateLoginSV = new ValidateLoginSM();
 
             if (user != null)
             {

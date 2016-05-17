@@ -1,6 +1,8 @@
 ﻿using DL.Models;
 using DL.Models.Repository;
+using DL.Models.Service;
 using DL.Models.Service.DiaryLogs;
+using DL.Models.Service.ServiceModels;
 using DL.Models.Service.Users;
 using DL.Web.ActionFilter;
 using DL.Web.Controllers.Base;
@@ -17,26 +19,46 @@ namespace DL.Web.Controllers
 {
     public class DiaryLogNewController : BaseController
     {
+        #region Properties
 
         private int PageSize = Web.Properties.Settings.Default.PageSize;
 
+        #endregion
 
-        #region Search
+        #region Index
 
         [HttpGet]
         [CheckSessionAcitionFilter]
-        public ActionResult Index()
+        public ActionResult Index(int userId)
         {
-            int userId = Convert.ToInt32(Session["Id"].ToString());
+            DiaryLogService _diaryLogService = new DiaryLogService();
+            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(userId);
             string account = Session["Account"].ToString();
 
-            DiaryLogService _diaryLogService = new DiaryLogService();
-            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(account, userId);
+            ViewBag.Account = account;
 
             DiaryLogNewIndexViewModel diaryLogNewIndexVM = new DiaryLogNewIndexViewModel();
             diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
+            diaryLogNewIndexVM.UserId = userId;
 
             return View(diaryLogNewIndexVM);
+        }
+
+        [HttpGet]
+        [CheckSessionAcitionFilter]
+        public ActionResult MasterIndex()
+        {
+            UserAndDiaryLogService _service = new UserAndDiaryLogService();
+            List<DiaryLogAndUserSM> diaryLogAndUserSMs = _service.FindAllUserJoinDiaryLog();
+
+            List<UserGroupVM> userGroupVM = diaryLogAndUserSMs.GroupBy(item =>new {item.diaryLog.UserId, item.UserAccount ,item.UserName})
+            .Select(group => new UserGroupVM {UserId =group.Key.UserId, UserAccount = group.Key.UserAccount, UserName = group.Key.UserName  })
+            .ToList();
+
+            DiaryLogNewMasterIndexVM diaryLogNewMasterIndexVM = new DiaryLogNewMasterIndexVM();
+            diaryLogNewMasterIndexVM.UserGroups = userGroupVM.OrderBy(x=>x.UserAccount).ToPagedList(diaryLogNewMasterIndexVM.Page > 0 ? diaryLogNewMasterIndexVM.Page - 1 : 0, PageSize);
+
+            return View(diaryLogNewMasterIndexVM);
         }
 
         #endregion
@@ -132,10 +154,7 @@ namespace DL.Web.Controllers
 
         #endregion
 
-        public ActionResult GetDetailPartialView()
-        {
-            return PartialView("_DiaryLogDetailPartialView");
-        }
+        #region Delete
 
         public ActionResult DeleteADetail(int actdetailNo)
         {
@@ -144,6 +163,37 @@ namespace DL.Web.Controllers
             return Json(_diaryLogService.DeleteDiaryLog(actdetailNo));
         }
 
+        #endregion
+
+        #region Detail
+
+        public ActionResult Detail(string strDate,int userId)
+        {
+            UserService _userService = new UserService();
+            DiaryLogService _diaryLogService = new DiaryLogService();
+
+            string userAccount = Session["Account"].ToString();
+            //int userId = Convert.ToInt32(Session["Id"].ToString());
+
+            string userName = _userService.GetUserNameById(userId);
+
+            List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate, userId);
+
+            DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
+            diaryLogNewEidts.UserAccount = userAccount;
+            diaryLogNewEidts.UserName = userName;
+            diaryLogNewEidts.DiaryLogDate = Convert.ToDateTime(strDate);
+            diaryLogNewEidts.DiaryLogs = diaryLogs;
+
+            return View(diaryLogNewEidts);
+        }
+
+        #endregion
+
+        public ActionResult GetDetailPartialView()
+        {
+            return PartialView("_DiaryLogDetailPartialView");
+        }
 
     }
 }

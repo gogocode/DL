@@ -25,15 +25,12 @@ namespace DL.Models.Service.DiaryLogs
             return GetDiaryLogsByUserId(userId).Where(x => x.DiaryLogDate == date).ToList();
         }
 
-        public List<DateTime> GetDiarysGroupByUserId(string account, int userId)
+        public List<DateTime> GetDiarysGroupByUserId( int userId)
         {
             List<DiaryLog> diaryLogs = new List<DiaryLog>();
 
-            if (!account.Equals("9999"))
-            {
-                diaryLogs = GetDiaryLogsByUserId(userId);
-            }
-
+            diaryLogs = GetDiaryLogsByUserId(userId);
+     
             var gro = from d in diaryLogs
                       group d by d.DiaryLogDate;
 

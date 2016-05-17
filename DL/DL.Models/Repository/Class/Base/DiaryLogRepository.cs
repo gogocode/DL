@@ -9,4 +9,5 @@ namespace DL.Models.Repository.Class.Base
     public class DiaryLogRepository : GenericRepository<DiaryLog>
     {
     }
+
 }

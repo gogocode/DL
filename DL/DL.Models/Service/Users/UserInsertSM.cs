@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DL.Models.Service.Users
 {
-    class UserInsertSV
+    class UserInsertSM
     {
     }
 }

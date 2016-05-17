@@ -1,0 +1,92 @@
+﻿@using DL.Web.ViewModels.DiaryLogNew
+@model DiaryLogNewEditViewModel
+
+@{
+    ViewBag.Title = "明細";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#diaryLogDate').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+    })
+
+</script>
+
+<br />
+
+@using (Html.BeginForm("Detail", "DiaryLogNew", FormMethod.Post, new { @id = "detailForm" }))
+{
+    @Html.AntiForgeryToken()
+    <h3 class="microsoft-font">工作日誌</h3>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-1" for="name">員工編號</label>
+            <label class="col-md-2 label-info" for="name">@Model.UserAccount</label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-1" for="name">姓名</label>
+            <label class="col-md-2 label-info" for="name">@Model.UserName</label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-1" for="name">時間</label>
+            <label class="col-md-2 label-info" for="name"> @string.Format("{0:d}", Model.DiaryLogDate) </label>
+            @Html.HiddenFor(m => m.DiaryLogDate)
+        </div>
+    </div>
+
+        <a id="addDetailBtn" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
+        <br />
+            <table id='TextBoxesGroup' class="table table-striped" style="font-size:12px">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>項目</th>
+                        <th>內容</th>
+                        <th>狀態</th>
+                        <th>時數</th>
+                        <th>狀況</th>
+                        <th>是否解決</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.DiaryLogs)
+                {
+                    <tr>
+
+                            <td style="width:0">
+                         
+                            </td>
+                            <td>
+                                <input class="text-box single-line" style="width:120px" value="@item.DiaryLogItem" /> 
+                            </td>
+                            <td>
+                                <input class="text-box single-line" style="width:180px" value="@item.DiaryLogContents" />
+                            </td>
+                            <td>
+                                <input class="text-box single-line" style="width:60px" value="@item.DiaryLogStatus" />
+                            </td>
+                            <td>
+                                <input class="text-box single-line" style="width:40px" value="@item.DiaryLogHours" type="number" />
+                            </td>
+                            <td>
+                                <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSituation" />
+                            </td>
+                            <td>
+                                <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSolve" />
+                            </td>
+                            <td>
+
+                            </td>
+                                  
+                    </tr>
+                                    }
+            </table>
+}
+
+<div>
+    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+</div>
+

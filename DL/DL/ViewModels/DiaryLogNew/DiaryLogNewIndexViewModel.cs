@@ -17,6 +17,8 @@ namespace DL.Web.ViewModels.DiaryLogNew
 
         public DateTime? dateEnd { get; set; }  // 搜尋條件2
 
+        public int UserId { get; set; }
+
         public IPagedList<DateTime> DiaryLogDate { get; set; }  // 符合條件資料
 
         public int Page { get; set; } //頁碼

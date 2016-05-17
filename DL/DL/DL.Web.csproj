@@ -229,6 +229,8 @@
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewCreateViewModel.cs" />
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewEditViewModel.cs" />
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewIndexViewModel.cs" />
+    <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewMasterIndexVM.cs" />
+    <Compile Include="ViewModels\DiaryLogNew\UserGroupVM.cs" />
     <Compile Include="ViewModels\DiaryLog\DiaryLogGroupByDateViewModel.cs" />
     <Compile Include="ViewModels\DiaryLog\DiaryLogSearchViewModel.cs" />
     <Compile Include="ViewModels\DiaryLog\DiaryLogViewModel.cs" />
@@ -477,6 +479,8 @@
     <Content Include="Views\DiaryLogNew\_DiaryLogEditDetailPartialView.cshtml" />
     <Content Include="Views\DiaryLogNew\_DiaryLogDetailPartialView.cshtml" />
     <Content Include="Views\DiaryLogNew\Create.cshtml" />
+    <Content Include="Views\DiaryLogNew\MasterIndex.cshtml" />
+    <Content Include="Views\DiaryLogNew\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

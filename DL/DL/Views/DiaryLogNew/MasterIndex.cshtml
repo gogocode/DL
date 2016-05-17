@@ -1,28 +1,28 @@
 ﻿@using DL.Web.ViewModels.DiaryLogNew
-@model DiaryLogNewIndexViewModel
+@model DiaryLogNewMasterIndexVM
 
 @{
     ViewBag.Title = "輸入查詢條件";
 }
 
 <script type="text/javascript">
-    $(function () {
-        $('#dateStart').datepicker({
-            dateFormat: "yy/mm/dd"
-        });
-        $('#dateEnd').datepicker({
-            dateFormat: "yy/mm/dd"
-        });
-    })
+    //$(function () {
+    //    $('#dateStart').datepicker({
+    //        dateFormat: "yy/mm/dd"
+    //    });
+    //    $('#dateEnd').datepicker({
+    //        dateFormat: "yy/mm/dd"
+    //    });
+    //})
 </script>
 
 <br />
 <h4><strong>@ViewBag.Title</strong></h4>
 
-@using (Html.BeginForm("Index", "DiaryLog", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "diaryLogFrom", @class = "form-inline", role = "form" }))
+@using (Html.BeginForm("MasterIndex", "DiaryLogNew", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "diaryLogFrom", @class = "form-inline", role = "form" }))
 {
 
-    <div class="form-group">
+    @*<div class="form-group">
         <label class="sr-only" for="name">日期起</label>
         @Html.TextBox("dateStart", "", new { @placeholder = "請輸入日期起", @class = "form-control" })
     </div>
@@ -30,16 +30,11 @@
         <label class="sr-only" for="inputfile">日期迄</label>
         @Html.TextBox("dateEnd", "", new { @placeholder = "請輸入日期迄", @class = "form-control" })
     </div>
-    <input type="submit" value="查詢" class="btn btn-default" />
-        <br />
-        <br />
+    <input type="submit" value="查詢" class="btn btn-default" />*@
+    <br />
+    <br />
 
-        if(ViewBag.Account != "9999")
-        {
-        <a href="/DiaryLogNew/Create" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
-        }
-
-    if (Model.DiaryLogDate != null && Model.DiaryLogDate.Count() > 0)
+    if (Model.UserGroups != null && Model.UserGroups.Count() > 0)
     {
         <table class="table table-striped">
             <thead>
@@ -48,7 +43,10 @@
                         @Html.DisplayName("序號")
                     </th>
                     <th>
-                        @Html.DisplayName("時間")
+                        @Html.DisplayName("會員編號")
+                    </th>
+                    <th>
+                        @Html.DisplayName("姓名")
                     </th>
                     <th>
 
@@ -57,23 +55,20 @@
             </thead>
             <tbody>
                 @{int i = 0;}
-                @foreach (var item in Model.DiaryLogDate)
+                @foreach (var item in Model.UserGroups)
                 {
                     <tr>
                         <td>
-                            @(++i + (Model.DiaryLogDate.PageSize * (Model.DiaryLogDate.PageNumber - 1)))
+                            @(++i + (Model.UserGroups.PageSize * (Model.UserGroups.PageNumber - 1)))
                         </td>
                         <td>
-                            @String.Format("{0:d}", item)
+                            @item.UserAccount
                         </td>
                         <td>
-                            @if(ViewBag.Account != "9999"){
-                                 <a class="btn btn-primary" href="/DiaryLogNew/Edit/?strDate=@string.Format(" {0:yyyy-MM-dd}", item)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-primary" href="/DiaryLogNew/Detail/?strDate=@string.Format(" {0:yyyy-MM-dd}", item)&userId=@Model.UserId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>明細</a>
-                            }
+                            @item.UserName
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="/DiaryLogNew/Index/?userId=@item.UserId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>明細</a>
                         </td>
                     </tr>
                 }
@@ -81,7 +76,7 @@
         </table>
 
         <div class="pager">
-            @Html.Pager(Model.DiaryLogDate.PageSize, Model.DiaryLogDate.PageNumber, Model.DiaryLogDate.TotalItemCount)
+            @Html.Pager(Model.UserGroups.PageSize, Model.UserGroups.PageNumber, Model.UserGroups.TotalItemCount)
         </div>
                         }
                     }
@@ -123,6 +118,8 @@
 
     </script>
 }
+
+
 
 
 

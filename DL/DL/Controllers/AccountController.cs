@@ -23,6 +23,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using DL.Models.Repository.Class;
 
 namespace DL.Web.Controllers
 {
@@ -51,7 +52,7 @@ namespace DL.Web.Controllers
             Session.RemoveAll();
             UserService _userService = new UserService();
 
-            ValidateLoginSV validateLoginSV = _userService.ValidateLogin(model.AccountId, model.Password);
+            ValidateLoginSM validateLoginSV = _userService.ValidateLogin(model.AccountId, model.Password);
             int loginStatus = validateLoginSV.LoginStatus;
 
             if (loginStatus == 0)
@@ -75,10 +76,11 @@ namespace DL.Web.Controllers
 
                 if (Session["Account"].ToString().Equals("9999"))
                 {
-                    return RedirectToAction("Index","User");
+                    //return RedirectToAction("Index","User");
+                    return RedirectToAction("MasterIndex", "DiaryLogNew");
                 }
 
-                return RedirectToAction("Index", "DiaryLogNew");
+                return RedirectToAction("Index", "DiaryLogNew",new {userId = validateLoginSV.UserId });
             }
         }
 
