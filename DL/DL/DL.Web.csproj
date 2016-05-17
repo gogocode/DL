@@ -212,9 +212,8 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\DiaryLogController.cs" />
     <Compile Include="Controllers\DiaryLogNewController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\ValidateController.cs" />
+    <Compile Include="Controllers\Utility\ValidateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

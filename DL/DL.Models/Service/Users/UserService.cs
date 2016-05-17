@@ -20,6 +20,19 @@ namespace DL.Models.Service.Users
             }
         }
 
+        public string GetUserNameById(int userId)
+        {
+            return GetUserById(userId).UserName;
+        }
+
+        public User GetUserById(int userId)
+        {
+            using (UserRepository _repo = new UserRepository())
+            {
+                return _repo.GetById(userId);
+            } 
+        }
+
 
         public User GetUser(string userAccount, string userPassword)
         {

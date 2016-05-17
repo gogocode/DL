@@ -1,5 +1,7 @@
 ﻿using DL.Models;
 using DL.Models.Repository;
+using DL.Models.Service.DiaryLogs;
+using DL.Models.Service.Users;
 using DL.Web.ActionFilter;
 using DL.Web.Controllers.Base;
 using DL.Web.ViewModels.DiaryLogNew;
@@ -15,34 +17,9 @@ namespace DL.Web.Controllers
 {
     public class DiaryLogNewController : BaseController
     {
-        GenericRepository<DiaryLog> _genericRepository = null;
-        GenericRepository<User> _userRepository = null;
+
         private int PageSize = Web.Properties.Settings.Default.PageSize;
 
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    var grouping = Idioms.GroupBy(ui => ui.Idiom);
-
-        //    var duplicates = grouping.Where(group => group.Count() > 1);
-
-        //    if (duplicates.Any())
-        //    {
-        //        string message = string.Empty;
-
-        //        foreach (var duplicate in duplicates)
-        //        {
-        //            message += string.Format("{0} was selected {1} times", duplicate.Key, duplicate.Count());
-        //        }
-
-        //        yield return new ValidationResult(message, new[] { "Idioms" });
-        //    }
-        //}
-
-        public DiaryLogNewController()
-        {
-            this._genericRepository = new GenericRepository<DiaryLog>(new DiaryLogDBEntities());
-            this._userRepository = new GenericRepository<User>(new DiaryLogDBEntities());
-        }
 
         #region Search
 
@@ -50,24 +27,11 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Index()
         {
-
-            IQueryable<DiaryLog> diaryLogs = _genericRepository.GetAll();
             int userId = Convert.ToInt32(Session["Id"].ToString());
+            string account = Session["Account"].ToString();
 
-            if (!Session["Account"].ToString().Equals("9999"))
-            {
-                diaryLogs = diaryLogs.Where(x => x.UserId.Equals(userId));
-            }
-
-            var gro = from d in diaryLogs
-                      group d by d.DiaryLogDate;
-            List<DateTime> diaryLogDates = new List<DateTime>();
-            foreach (var item in gro)
-            {
-                DateTime diaryLogDate = item.Key;
-                diaryLogDates.Add(diaryLogDate);
-            }
-
+            DiaryLogService _diaryLogService = new DiaryLogService();
+            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(account, userId);
 
             DiaryLogNewIndexViewModel diaryLogNewIndexVM = new DiaryLogNewIndexViewModel();
             diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
@@ -83,17 +47,23 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Edit(string strDate)
         {
+            UserService _userService = new UserService();
+            DiaryLogService _diaryLogService = new DiaryLogService();
 
-            DateTime date = Convert.ToDateTime(strDate);
+            
 
-            int userAccount = Convert.ToInt32(Session["Account"].ToString());
+            string userAccount = Session["Account"].ToString();
             int userId = Convert.ToInt32(Session["Id"].ToString());
-            string userName = _userRepository.GetAll().Where(x => x.UserId == userId).FirstOrDefault().UserName;
-            List<DiaryLog> diaryLogs = _genericRepository.GetAll().Where(x => x.UserId == userId && x.DiaryLogDate == date).ToList();
+
+            string userName = _userService.GetUserNameById(userId);
+
+
+            List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate,userId);
+
             DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
-            diaryLogNewEidts.DiaryLogDate = date;
+            diaryLogNewEidts.DiaryLogDate = Convert.ToDateTime(strDate);
             diaryLogNewEidts.DiaryLogs = diaryLogs;
 
             return View(diaryLogNewEidts);
@@ -104,45 +74,12 @@ namespace DL.Web.Controllers
         public ActionResult Edit(DiaryLogNewEditViewModel diaryLogNewEidts)
         {
 
+            DiaryLogService _diaryLogService = new DiaryLogService();
             DateTime diaryLogDate = diaryLogNewEidts.DiaryLogDate;
+            string account = Session["Account"].ToString();
+            int userId = Convert.ToInt32( Session["Id"].ToString());
 
-            foreach (var item in diaryLogNewEidts.DiaryLogs)
-            {
-                DiaryLog diaryLog = _genericRepository.GetById(item.DiaryLogId);
-
-                if (diaryLog != null)
-                {
-                    diaryLog.DiaryLogItem = item.DiaryLogItem;
-                    diaryLog.DiaryLogContents = item.DiaryLogContents;
-                    diaryLog.DiaryLogStatus = item.DiaryLogStatus;
-                    diaryLog.DiaryLogHours = item.DiaryLogHours;
-                    diaryLog.DiaryLogSituation = item.DiaryLogSituation;
-                    diaryLog.DiaryLogSolve = item.DiaryLogSolve;
-                    diaryLog.UpdateDate = DateTime.Now;
-                    diaryLog.UpdateId = Session["Account"].ToString();
-
-                    _genericRepository.Edit(diaryLog);
-                }
-                else
-                {
-                    DiaryLog newDiaryLog = new DiaryLog();
-
-                    newDiaryLog.DiaryLogDate = diaryLogDate;
-                    newDiaryLog.UserId = Convert.ToInt32(Session["Id"].ToString());
-                    newDiaryLog.DiaryLogItem = item.DiaryLogItem;
-                    newDiaryLog.DiaryLogContents = item.DiaryLogContents;
-                    newDiaryLog.DiaryLogStatus = item.DiaryLogStatus;
-                    newDiaryLog.DiaryLogHours = item.DiaryLogHours;
-                    newDiaryLog.DiaryLogSituation = item.DiaryLogSituation;
-                    newDiaryLog.DiaryLogSolve = item.DiaryLogSolve;
-                    newDiaryLog.CreateDate = DateTime.Now;
-                    newDiaryLog.CreateId = Session["Account"].ToString();
-                    newDiaryLog.UpdateDate = DateTime.Now;
-                    newDiaryLog.UpdateId = Session["Account"].ToString();
-
-                    _genericRepository.Insert(newDiaryLog);
-                }
-            }
+            _diaryLogService.ModidDiaryLogy(diaryLogNewEidts.DiaryLogs.ToList(), diaryLogDate, account, userId);
 
             return RedirectToAction("Index");
         }
@@ -155,10 +92,13 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Create()
         {
-
-            int userAccount = Convert.ToInt32(Session["Account"].ToString());
+            UserService _userService = new UserService();
+            string userAccount = Session["Account"].ToString();
             int userId = Convert.ToInt32(Session["Id"].ToString());
-            string userName = _userRepository.GetAll().Where(x => x.UserId == userId).FirstOrDefault().UserName;
+
+            string userName = _userService.GetUserNameById(userId);
+
+
             DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
@@ -177,27 +117,14 @@ namespace DL.Web.Controllers
                 return View(model);
             }
 
-            string Id = Session["Id"].ToString();
-            string Account = Session["Account"].ToString();
+            int id = Convert.ToInt32( Session["Id"].ToString());
+            string account = Session["Account"].ToString();
+            DiaryLogService _diaryLogService = new DiaryLogService();
+
 
             foreach (var item in model.DiaryLogs)
             {
-                DiaryLog diaryLog = new DiaryLog();
-
-                diaryLog.UserId = Convert.ToInt32(Id);
-                diaryLog.DiaryLogDate = model.DiaryLogDate;
-                diaryLog.DiaryLogItem = item.DiaryLogItem;
-                diaryLog.DiaryLogContents = item.DiaryLogContents;
-                diaryLog.DiaryLogStatus = item.DiaryLogStatus;
-                diaryLog.DiaryLogHours = item.DiaryLogHours;
-                diaryLog.DiaryLogSituation = item.DiaryLogSituation;
-                diaryLog.DiaryLogSolve = item.DiaryLogSolve;
-                diaryLog.CreateDate = DateTime.Now;
-                diaryLog.CreateId = Account;
-                diaryLog.UpdateDate = DateTime.Now;
-                diaryLog.UpdateId = Account;
-
-                _genericRepository.Insert(diaryLog);
+                _diaryLogService.InsertDiaryLog(item, model.DiaryLogDate, account, id);
             }
 
             return RedirectToAction("Index");
@@ -212,16 +139,9 @@ namespace DL.Web.Controllers
 
         public ActionResult DeleteADetail(int actdetailNo)
         {
-            bool result = false;
+            DiaryLogService _diaryLogService = new DiaryLogService();
 
-            var detail = _genericRepository.GetById(actdetailNo);
-            if (detail != null)
-            {
-                _genericRepository.Delete(detail);
-                result = true;
-            }
-
-            return Json(result);
+            return Json(_diaryLogService.DeleteDiaryLog(actdetailNo));
         }
 
 
