@@ -8,37 +8,14 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-
-        @*if ($("#UserAccount").val() != null)
-            {
-        $("#UserAccount").blur(function () {
-            $.ajax({
-                url: '@Url.Action("CheckAccount")',
-                type: 'POST',
-                data: { 'account': $("#UserAccount").val() },
-                dataType: 'json',
-                success: function(data){
-                    if (data === "true")
-                    {
-                        alert("員工編號已存在");
-                    }
-                    else
-                    {
-                    }
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        });
-        }*@
+            $("form").makeValidationInline();
     });
 
 </script>
 
 <br />
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Register","Account",FormMethod.Post,new { @id="registerForm"}))
 {
     @Html.AntiForgeryToken()
     <h4><strong>@ViewBag.Title</strong></h4>

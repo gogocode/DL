@@ -27,6 +27,13 @@ namespace DL.Web
                       "~/Scripts/moment.min.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryinline").Include(
+                    "~/Scripts/jquery.validate.inline.js"
+                ));
+            bundles.Add(new StyleBundle("~/Content/inlinecss").Include(
+                      "~/Content/validationEngine.jquery.css"));
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
