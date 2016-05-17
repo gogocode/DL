@@ -71,7 +71,11 @@
     </Compile>
     <Compile Include="Interface\IGenericRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Class\Base\UserRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="Service\Users\UserInsertSV.cs" />
+    <Compile Include="Service\Users\UserService.cs" />
+    <Compile Include="Service\Users\ValidateLoginSV.cs" />
     <Compile Include="User.cs">
       <DependentUpon>DiaryLogModel.tt</DependentUpon>
     </Compile>

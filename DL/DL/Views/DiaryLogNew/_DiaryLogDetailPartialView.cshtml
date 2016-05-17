@@ -7,6 +7,7 @@
         </td>
         <td>
             @Html.TextBoxFor(m => m.DiaryLogItem, new { @class = "text-box single-line", @style = "width:120px" })
+            @Html.ValidationMessageFor(m => m.DiaryLogItem)
         </td>
         <td>
             @Html.TextBoxFor(m => m.DiaryLogContents, new { @class = "text-box single-line", @style = "width:180px" })

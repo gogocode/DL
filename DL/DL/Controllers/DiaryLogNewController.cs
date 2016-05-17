@@ -6,6 +6,7 @@ using DL.Web.ViewModels.DiaryLogNew;
 using MvcPaging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,6 +18,25 @@ namespace DL.Web.Controllers
         GenericRepository<DiaryLog> _genericRepository = null;
         GenericRepository<User> _userRepository = null;
         private int PageSize = Web.Properties.Settings.Default.PageSize;
+
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    var grouping = Idioms.GroupBy(ui => ui.Idiom);
+
+        //    var duplicates = grouping.Where(group => group.Count() > 1);
+
+        //    if (duplicates.Any())
+        //    {
+        //        string message = string.Empty;
+
+        //        foreach (var duplicate in duplicates)
+        //        {
+        //            message += string.Format("{0} was selected {1} times", duplicate.Key, duplicate.Count());
+        //        }
+
+        //        yield return new ValidationResult(message, new[] { "Idioms" });
+        //    }
+        //}
 
         public DiaryLogNewController()
         {
@@ -203,6 +223,7 @@ namespace DL.Web.Controllers
 
             return Json(result);
         }
+
 
     }
 }

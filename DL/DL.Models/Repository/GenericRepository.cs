@@ -23,7 +23,7 @@ namespace DL.Models.Repository
             DbSet = _dbContext.Set<TEntity>();
         }
 
-        public GenericRepository()
+        public GenericRepository() : this(new DiaryLogDBEntities())
         {
         }
 
@@ -66,7 +66,7 @@ namespace DL.Models.Repository
             this._dbContext.SaveChanges();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);

@@ -11,9 +11,11 @@
 using AutoMapper;
 using DL.Models;
 using DL.Models.Repository;
+using DL.Models.Service;
+using DL.Models.Service.Users;
 using DL.Web.ActionFilter;
 using DL.Web.Controllers.Base;
-using DL.Web.Services;
+using DL.Models.Repository.Class.Base;
 using DL.Web.ViewModels.Account;
 using System;
 using System.Collections.Generic;
@@ -26,14 +28,8 @@ namespace DL.Web.Controllers
 {
     public class AccountController : BaseController
     {
-        GenericRepository<User> _genericRepository = null;
-        AccountService _service = null;
 
-        public AccountController()
-        {
-            this._genericRepository = new GenericRepository<User>(new DiaryLogDBEntities());
-            this._service = new AccountService(); 
-        }
+        UserService _userService = null;
 
         #region Login&Logout
 
@@ -53,10 +49,10 @@ namespace DL.Web.Controllers
 
             // 登入時清空所有 Session 資料
             Session.RemoveAll();
+            UserService _userService = new UserService();
 
-            string strPassword = model.Password;
-            string strUsername = model.AccountId;
-            int loginStatus = ValidateLogin(strUsername, strPassword);
+            ValidateLoginSV validateLoginSV = _userService.ValidateLogin(model.AccountId, model.Password);
+            int loginStatus = validateLoginSV.LoginStatus;
 
             if (loginStatus == 0)
             {
@@ -74,12 +70,13 @@ namespace DL.Web.Controllers
             }
             else
             {
+                Session["Id"] = validateLoginSV.UserId;
+                Session["Account"] = validateLoginSV.UserAccount;
+
                 if (Session["Account"].ToString().Equals("9999"))
                 {
                     return RedirectToAction("Index","User");
                 }
-
-                //return RedirectToAction("Index", "DiaryLog");
 
                 return RedirectToAction("Index", "DiaryLogNew");
             }
@@ -111,7 +108,9 @@ namespace DL.Web.Controllers
                 return View(registerVM);
             }
 
-            if(_service.IsAccountExist(registerVM.UserAccount))
+            _userService = new UserService();
+
+            if (_userService.IsUserAccountExist(registerVM.UserAccount))
             {
                 ModelState.AddModelError(string.Empty, "員工編號已存在。");
 
@@ -128,7 +127,9 @@ namespace DL.Web.Controllers
             user.UpdateDate = nowDate;
             user.UpdateId = "9999";
 
-            _genericRepository.Insert(user);
+            using (UserRepository _repo = new UserRepository())
+            { _repo.Insert(user); }
+                
 
             return RedirectToAction("RegistSuccess");
         }
@@ -137,54 +138,6 @@ namespace DL.Web.Controllers
         public ActionResult RegistSuccess()
         {
             return View();
-        }
-
-        #endregion
-
-        #region Private Methods
-        /// <summary>
-        /// 驗證使用者是否登入成功
-        /// </summary>
-        /// <param name="strUsername">登入帳號</param>
-        /// <param name="strPassword">登入密碼</param>
-        /// <returns>loginStatus為0 帳號或密碼輸入錯誤 loginStatus為1 帳號未啟動 loginStatus為2 登入正常</returns>
-        private int ValidateLogin(string strUsername, string strPassword)
-        {
-
-            //驗證
-            //檢查 Username, Password 是否正確
-            User user = _genericRepository.GetAll().Where(x => x.UserAccount.Equals(strUsername) && x.UserPassword.Equals(strPassword)).FirstOrDefault();
-
-            if (user != null)
-            {
-                if (user.UserStatus == "0" || string.IsNullOrEmpty(user.UserStatus))
-                {
-                    return 1;
-                }
-
-                Session["Id"] = user.UserId;
-                Session["Account"] = user.UserAccount;
-
-                return 2;
-            }
-
-            return 0;
-        }
-        #endregion
-
-        #region Ajax
-
-        [HttpPost]
-        public JsonResult CheckAccount(string account)
-        {
-            User user = _genericRepository.GetAll().Where(x => x.UserAccount == account).FirstOrDefault();
-
-            if(user != null)
-            {
-                return Json("true");
-            }
-
-            return Json("false");
         }
 
         #endregion

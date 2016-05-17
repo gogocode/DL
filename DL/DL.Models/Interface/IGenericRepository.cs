@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DL.Models.Interface
 {
-    public interface IGenericRepository<TEntity>
+    public interface IGenericRepository<TEntity> : IDisposable where TEntity : class
     {
         TEntity GetById(int id);
 
