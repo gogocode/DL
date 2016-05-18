@@ -38,6 +38,26 @@ namespace DL.Models.Service.Users
             } 
         }
 
+        public List<User> FindUsersByAccount(string account)
+        {
+            List<User> users = FindAllUsers();
+
+            if (!string.IsNullOrWhiteSpace(account))
+            {
+                users = FindAllUsers().Where(x => x.UserAccount.Contains(account)).ToList();
+            }
+
+            return users.ToList();
+        }
+
+        public List<User> FindAllUsers()
+        {
+            using (UserRepository _repo = new UserRepository())
+            {
+                return _repo.GetAll().ToList();
+            }
+        }
+
 
         public User GetUser(string userAccount, string userPassword)
         {

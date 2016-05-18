@@ -6,9 +6,9 @@ using System.Web;
 
 namespace DL.Web.ViewModels.DiaryLogNew
 {
-    public class DiaryLogNewIndexViewModel
+    public class DiaryLogNewIndexVM
     {
-        public DiaryLogNewIndexViewModel()
+        public DiaryLogNewIndexVM()
         {
             Page = 0;
         }

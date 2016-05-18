@@ -1,8 +1,8 @@
 ﻿@using DL.Web.ViewModels.DiaryLogNew
-@model DiaryLogNewEditViewModel
+@model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title = "編輯";
+    ViewBag.Title = "編輯 工作日誌";
 }
 
 <script type="text/javascript">
@@ -12,9 +12,6 @@
         });
     })
 
-</script>
-
-<script type="text/javascript">
 
     // 新增明細的Partial View, 附加到 table
     $(function () {
@@ -60,27 +57,35 @@
 @using (Html.BeginForm("Edit", "DiaryLogNew", FormMethod.Post, new { @id = "editForm" }))
 {
     @Html.AntiForgeryToken()
-    <h3 class="microsoft-font">工作日誌</h3>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label class="col-md-1" for="name">員工編號</label>
-                <label class="col-md-2 label-info" for="name">@Model.UserAccount</label>
-            </div>
+    <h4><strong>@ViewBag.Title</strong></h4>
+    <hr />
 
-            <div class="form-group">
-                <label class="col-md-1" for="name">姓名</label>
-                <label class="col-md-2 label-info" for="name">@Model.UserName</label>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-1" for="name">時間</label>
-                <label class="col-md-2 label-info" for="name"> @string.Format("{0:d}", Model.DiaryLogDate) </label>
-                @Html.HiddenFor(m => m.DiaryLogDate)
+    @Html.HiddenFor(m => m.DiaryLogDate)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2">員工編號</label>
+            <div class="col-md-2">
+                <label class="form-control">@Model.UserAccount</label>
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="control-label col-md-2">姓名</label>
+            <div class="col-md-2">
+                <label class="form-control">@Model.UserName</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">時間</label>
+            <div class="col-md-2">
+                <label class="form-control">@String.Format("{0:d}",Model.DiaryLogDate) </label>
+            </div>
+        </div>
+    </div>
+
         <a id="addDetailBtn" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
-            <br />
+        <br />
             <table id='TextBoxesGroup' class="table table-striped" style="font-size:12px">
                 <thead>
                     <tr>
@@ -105,5 +110,5 @@
 }
 
 <div>
-    @Html.ActionLink("返回列表", "Index", new { userId= Model.UserId}, new { @class = "btn btn-default" })
+    @Html.ActionLink("返回列表", "Index", new { userId = Model.UserId }, new { @class = "btn btn-default" })
 </div>

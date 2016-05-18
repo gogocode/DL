@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using DL.Models;
 using DL.Models.Repository;
+using DL.Models.Service.Users;
+using DL.Web.ActionFilter;
 using DL.Web.ViewModels.User;
 using MvcPaging;
 using System;
@@ -25,32 +27,25 @@ namespace DL.Web.Controllers
         #region 查詢
 
         [HttpGet]
+        [CheckSessionAcitionFilter]
         public ActionResult Index()
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
+            UserService _userService = new UserService();
             UserIndexViewModel userIdexVM = new UserIndexViewModel();
+            List<User> users = _userService.FindAllUsers().ToList();
+
+            userIdexVM.Users = users.OrderBy(p => p.UserStatus).ToPagedList(userIdexVM.Page > 0 ? userIdexVM.Page - 1 : 0, PageSize);
 
             return View(userIdexVM);
         }
 
         [HttpPost]
+        [CheckSessionAcitionFilter]
         public ActionResult Index(UserIndexViewModel userIdexVM)
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            UserService _userService = new UserService();
 
-            IQueryable<User> users = _genericRepository.GetAll();
-
-            if (!string.IsNullOrEmpty(userIdexVM.UserAccount))
-            {
-                users = users.Where(x => x.UserAccount.Contains(userIdexVM.UserAccount));
-            }
+            List<User> users = _userService.FindUsersByAccount(userIdexVM.UserAccount);
 
             userIdexVM.Users = users.OrderBy(p => p.UserStatus).ToPagedList(userIdexVM.Page > 0 ? userIdexVM.Page - 1 : 0, PageSize);
 
@@ -62,12 +57,9 @@ namespace DL.Web.Controllers
         #region 編輯
 
         [HttpGet]
+        [CheckSessionAcitionFilter]
         public ActionResult Edit(int? id)
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
             if (id == null)
             {
@@ -89,14 +81,10 @@ namespace DL.Web.Controllers
         }
 
         [HttpPost]
+        [CheckSessionAcitionFilter]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserEditViewModel userVM)
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             User user = _genericRepository.GetById(userVM.UserId);
 
             if (ModelState.IsValid)
@@ -118,13 +106,9 @@ namespace DL.Web.Controllers
         #endregion
 
         #region 刪除
-
+        [CheckSessionAcitionFilter]
         public ActionResult Delete(int? id)
         {
-            if (!IsSessionExist())
-            {
-                return RedirectToAction("Login", "Account");
-            }
 
             if (id == null)
             {
@@ -146,6 +130,7 @@ namespace DL.Web.Controllers
         // POST: DiaryLogs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [CheckSessionAcitionFilter]
         public ActionResult DeleteConfirmed(int id)
         {
             User user = _genericRepository.GetById(id);
@@ -156,7 +141,10 @@ namespace DL.Web.Controllers
 
         #endregion
 
+        #region 啟動
+
         [HttpGet]
+        [CheckSessionAcitionFilter]
         public ActionResult StartUp(int id)
         {
             User user = _genericRepository.GetById(id);
@@ -165,6 +153,8 @@ namespace DL.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        #endregion
 
         #region Private Methods
 

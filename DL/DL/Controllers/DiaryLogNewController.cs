@@ -36,7 +36,7 @@ namespace DL.Web.Controllers
             string account = Session["Account"].ToString();
             ViewBag.Account = account;
 
-            DiaryLogNewIndexViewModel diaryLogNewIndexVM = new DiaryLogNewIndexViewModel();
+            DiaryLogNewIndexVM diaryLogNewIndexVM = new DiaryLogNewIndexVM();
             diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
             diaryLogNewIndexVM.UserId = userId;
 
@@ -45,7 +45,7 @@ namespace DL.Web.Controllers
 
         [HttpPost]
         [CheckSessionAcitionFilter]
-        public ActionResult Index(DiaryLogNewIndexViewModel model)
+        public ActionResult Index(DiaryLogNewIndexVM model)
         {
             UserService _userService = new UserService();
             DiaryLogService _diaryLogService = new DiaryLogService();
@@ -54,7 +54,7 @@ namespace DL.Web.Controllers
             string account = Session["Account"].ToString();
             ViewBag.Account = account;
 
-            DiaryLogNewIndexViewModel diaryLogNewIndexVM = new DiaryLogNewIndexViewModel();
+            DiaryLogNewIndexVM diaryLogNewIndexVM = new DiaryLogNewIndexVM();
             diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
             //diaryLogNewIndexVM.UserId = userId;
 
@@ -112,7 +112,7 @@ namespace DL.Web.Controllers
 
             List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate,userId);
 
-            DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
+            DiaryLogNewEditVM diaryLogNewEidts = new DiaryLogNewEditVM();
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = Convert.ToDateTime(strDate);
@@ -124,7 +124,7 @@ namespace DL.Web.Controllers
 
         [HttpPost]
         [CheckSessionAcitionFilter]
-        public ActionResult Edit(DiaryLogNewEditViewModel diaryLogNewEidts)
+        public ActionResult Edit(DiaryLogNewEditVM diaryLogNewEidts)
         {
 
             DiaryLogService _diaryLogService = new DiaryLogService();
@@ -134,7 +134,7 @@ namespace DL.Web.Controllers
 
             _diaryLogService.ModidDiaryLogy(diaryLogNewEidts.DiaryLogs.ToList(), diaryLogDate, account, userId);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index",new { userId = userId });
         }
 
         #endregion
@@ -150,7 +150,7 @@ namespace DL.Web.Controllers
             int userId = Convert.ToInt32(Session["Id"].ToString());
             string userName = _userService.GetUserNameById(userId);
 
-            DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
+            DiaryLogNewEditVM diaryLogNewEidts = new DiaryLogNewEditVM();
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = DateTime.Now.Date;
@@ -161,25 +161,24 @@ namespace DL.Web.Controllers
 
         [HttpPost]
         [CheckSessionAcitionFilter]
-        public ActionResult Create(DiaryLogNewCreateViewModel model)
+        public ActionResult Create(DiaryLogNewCreateVM model)
         {
-
             if (model.DiaryLogs == null || model.DiaryLogDate == null)
             {
                 return View(model);
             }
 
-            int id = Convert.ToInt32( Session["Id"].ToString());
+            int userId = Convert.ToInt32( Session["Id"].ToString());
             string account = Session["Account"].ToString();
             DiaryLogService _diaryLogService = new DiaryLogService();
 
 
             foreach (var item in model.DiaryLogs)
             {
-                _diaryLogService.InsertDiaryLog(item, model.DiaryLogDate, account, id);
+                _diaryLogService.InsertDiaryLog(item, model.DiaryLogDate, account, userId);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index",new { userId = userId });
         }
 
         #endregion
@@ -207,7 +206,7 @@ namespace DL.Web.Controllers
 
             List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate, userId);
 
-            DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
+            DiaryLogNewEditVM diaryLogNewEidts = new DiaryLogNewEditVM();
             diaryLogNewEidts.UserId = userId;
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;

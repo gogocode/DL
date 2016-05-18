@@ -5,7 +5,7 @@ using System.Web;
 
 namespace DL.Web.ViewModels.DiaryLogNew
 {
-    public class DiaryLogNewCreateViewModel
+    public class DiaryLogNewCreateVM
     {
         public int UserAccount { get; set; }
 

@@ -226,9 +226,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewCreateViewModel.cs" />
-    <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewEditViewModel.cs" />
-    <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewIndexViewModel.cs" />
+    <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewCreateVM.cs" />
+    <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewEditVM.cs" />
+    <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewIndexVM.cs" />
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewMasterIndexVM.cs" />
     <Compile Include="ViewModels\DiaryLogNew\UserGroupVM.cs" />
     <Compile Include="ViewModels\DiaryLog\DiaryLogGroupByDateViewModel.cs" />

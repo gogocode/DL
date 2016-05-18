@@ -4,16 +4,26 @@
     ViewBag.Title = "帳號編輯";
 }
 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+            $("form").makeValidationInline();
+    });
+
+</script>
+
 <br />
-<br />
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
+    <h4><strong>@ViewBag.Title</strong></h4>
+    <hr />
+
     <div class="form-horizontal">
-        <h4>@ViewBag.Title</h4>
-        <hr />
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.UserId)
         <div class="form-group">

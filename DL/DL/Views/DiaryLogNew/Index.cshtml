@@ -1,5 +1,5 @@
 ﻿@using DL.Web.ViewModels.DiaryLogNew
-@model DiaryLogNewIndexViewModel
+@model DiaryLogNewIndexVM
 
 @{
     ViewBag.Title = "輸入查詢條件";
@@ -51,7 +51,6 @@
                         @Html.DisplayName("時間")
                     </th>
                     <th>
-
                     </th>
                 </tr>
             </thead>
@@ -97,9 +96,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-
         $(function () {
-
             // Fields
             var _pageLinkers = $(".pager> a");
 
@@ -127,7 +124,6 @@
                 results = regex.exec(url);
             return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
         }
-
 
     </script>
 }
