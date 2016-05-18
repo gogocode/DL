@@ -18,6 +18,23 @@ namespace DL.Models.Service
             }
         }
 
+        public List<DiaryLogAndUserSM> FindUserJoinDiaryLogByAccountId(string userAccount,string userName)
+        {
+            List<DiaryLogAndUserSM> diaryLogAndUsers = FindAllUserJoinDiaryLog();
+
+            if (!string.IsNullOrWhiteSpace(userAccount))
+            {
+                diaryLogAndUsers = diaryLogAndUsers.Where(x => x.UserAccount.Contains(userAccount)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(userName))
+            {
+                diaryLogAndUsers = diaryLogAndUsers.Where(x=>x.UserName.Contains(userName)).ToList();
+            }
+
+            return diaryLogAndUsers;
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

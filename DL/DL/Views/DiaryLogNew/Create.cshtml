@@ -35,6 +35,7 @@
     @Html.AntiForgeryToken()
     <h3 class="microsoft-font">工作日誌</h3>
 
+    @Html.HiddenFor(x=>x.UserId)
     <div class="form-horizontal">
         <div class="form-group">
             <label class="control-label col-md-2">員工編號</label>
@@ -81,6 +82,6 @@
 }
 
 <div>
-    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("返回列表", "Index", new { userId = Model.UserId}, new { @class = "btn btn-default" })
 </div>
 

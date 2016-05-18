@@ -105,5 +105,5 @@
 }
 
 <div>
-    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("返回列表", "Index", new { userId= Model.UserId}, new { @class = "btn btn-default" })
 </div>

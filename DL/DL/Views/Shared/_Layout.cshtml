@@ -24,11 +24,12 @@
                 <ul class="nav navbar-nav">
                     @if (Session["Account"] != null && Session["Account"].ToString() != "9999")
                     {
-                        <li>@Html.ActionLink("填寫工作日誌", "Index", "DiaryLog")</li>
+                        <li>@Html.ActionLink("工作日誌", "Index",new {userId = Session["Id"].ToString() }, "DiaryLogNew")</li>
                     }
                     else if(Session["Account"] != null && Session["Account"].ToString() == "9999")
                     {
                         <li>@Html.ActionLink("會員管理", "Index", "User")</li>
+                        <li>@Html.ActionLink("工作日誌", "MasterIndex", "DiaryLogNew")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

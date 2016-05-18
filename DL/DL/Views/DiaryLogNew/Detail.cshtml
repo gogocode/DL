@@ -38,55 +38,50 @@
         </div>
     </div>
 
-        <a id="addDetailBtn" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
-        <br />
-            <table id='TextBoxesGroup' class="table table-striped" style="font-size:12px">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>項目</th>
-                        <th>內容</th>
-                        <th>狀態</th>
-                        <th>時數</th>
-                        <th>狀況</th>
-                        <th>是否解決</th>
-                    </tr>
-                </thead>
-                @foreach (var item in Model.DiaryLogs)
+    <br />
+        <table id='TextBoxesGroup' class="table table-striped" style="font-size:12px">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>項目</th>
+                    <th>內容</th>
+                    <th>狀態</th>
+                    <th>時數</th>
+                    <th>狀況</th>
+                    <th>是否解決</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.DiaryLogs)
                 {
-                    <tr>
-
-                            <td style="width:0">
-                         
-                            </td>
-                            <td>
-                                <input class="text-box single-line" style="width:120px" value="@item.DiaryLogItem" /> 
-                            </td>
-                            <td>
-                                <input class="text-box single-line" style="width:180px" value="@item.DiaryLogContents" />
-                            </td>
-                            <td>
-                                <input class="text-box single-line" style="width:60px" value="@item.DiaryLogStatus" />
-                            </td>
-                            <td>
-                                <input class="text-box single-line" style="width:40px" value="@item.DiaryLogHours" type="number" />
-                            </td>
-                            <td>
-                                <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSituation" />
-                            </td>
-                            <td>
-                                <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSolve" />
-                            </td>
-                            <td>
-
-                            </td>
-                                  
-                    </tr>
-                                    }
-            </table>
+                <tr>
+                    <td style="width:0"></td>
+                    <td>
+                        <input class="text-box single-line" style="width:120px" value="@item.DiaryLogItem" disabled="disabled" />
+                    </td>
+                    <td>
+                        <input class="text-box single-line" style="width:180px" value="@item.DiaryLogContents" disabled="disabled" />
+                    </td>
+                    <td>
+                        <input class="text-box single-line" style="width:60px" value="@item.DiaryLogStatus" type="checkbox" disabled="disabled" />
+                    </td>
+                    <td>
+                        <input class="text-box single-line" style="width:40px" value="@item.DiaryLogHours" type="number" disabled="disabled" />
+                    </td>
+                    <td>
+                        <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSituation" disabled="disabled" />
+                    </td>
+                    <td>
+                        <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSolve" disabled="disabled" />
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+        
 }
 
+
 <div>
-    @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("返回列表", "Index",new { userId=Model.UserId}, new { @class = "btn btn-default" })
 </div>
 

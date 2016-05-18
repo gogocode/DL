@@ -34,7 +34,6 @@ namespace DL.Web.Controllers
             DiaryLogService _diaryLogService = new DiaryLogService();
             List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(userId);
             string account = Session["Account"].ToString();
-
             ViewBag.Account = account;
 
             DiaryLogNewIndexViewModel diaryLogNewIndexVM = new DiaryLogNewIndexViewModel();
@@ -42,6 +41,24 @@ namespace DL.Web.Controllers
             diaryLogNewIndexVM.UserId = userId;
 
             return View(diaryLogNewIndexVM);
+        }
+
+        [HttpPost]
+        [CheckSessionAcitionFilter]
+        public ActionResult Index(DiaryLogNewIndexViewModel model)
+        {
+            UserService _userService = new UserService();
+            DiaryLogService _diaryLogService = new DiaryLogService();
+            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(model.UserId,model.dateStart,model.dateEnd);
+
+            string account = Session["Account"].ToString();
+            ViewBag.Account = account;
+
+            DiaryLogNewIndexViewModel diaryLogNewIndexVM = new DiaryLogNewIndexViewModel();
+            diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
+            //diaryLogNewIndexVM.UserId = userId;
+
+            return View("Index",diaryLogNewIndexVM);
         }
 
         [HttpGet]
@@ -61,6 +78,23 @@ namespace DL.Web.Controllers
             return View(diaryLogNewMasterIndexVM);
         }
 
+        [HttpPost]
+        [CheckSessionAcitionFilter]
+        public ActionResult MasterIndex(DiaryLogNewMasterIndexVM model)
+        {
+            UserAndDiaryLogService _service = new UserAndDiaryLogService();
+            List<DiaryLogAndUserSM> diaryLogAndUserSMs = _service.FindUserJoinDiaryLogByAccountId(model.UserAccount,model.UserName);
+
+            List<UserGroupVM> userGroupVM = diaryLogAndUserSMs.GroupBy(item => new { item.diaryLog.UserId, item.UserAccount, item.UserName })
+            .Select(group => new UserGroupVM { UserId = group.Key.UserId, UserAccount = group.Key.UserAccount, UserName = group.Key.UserName })
+            .ToList();
+
+            DiaryLogNewMasterIndexVM diaryLogNewMasterIndexVM = new DiaryLogNewMasterIndexVM();
+            diaryLogNewMasterIndexVM.UserGroups = userGroupVM.OrderBy(x => x.UserAccount).ToPagedList(diaryLogNewMasterIndexVM.Page > 0 ? diaryLogNewMasterIndexVM.Page - 1 : 0, PageSize);
+
+            return View(diaryLogNewMasterIndexVM);
+        }
+
         #endregion
 
         #region Edit
@@ -72,13 +106,9 @@ namespace DL.Web.Controllers
             UserService _userService = new UserService();
             DiaryLogService _diaryLogService = new DiaryLogService();
 
-            
-
             string userAccount = Session["Account"].ToString();
             int userId = Convert.ToInt32(Session["Id"].ToString());
-
             string userName = _userService.GetUserNameById(userId);
-
 
             List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate,userId);
 
@@ -87,6 +117,7 @@ namespace DL.Web.Controllers
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = Convert.ToDateTime(strDate);
             diaryLogNewEidts.DiaryLogs = diaryLogs;
+            diaryLogNewEidts.UserId = userId;
 
             return View(diaryLogNewEidts);
         }
@@ -117,14 +148,13 @@ namespace DL.Web.Controllers
             UserService _userService = new UserService();
             string userAccount = Session["Account"].ToString();
             int userId = Convert.ToInt32(Session["Id"].ToString());
-
             string userName = _userService.GetUserNameById(userId);
-
 
             DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = DateTime.Now.Date;
+            diaryLogNewEidts.UserId = userId;
 
             return View(diaryLogNewEidts);
         }
@@ -172,14 +202,13 @@ namespace DL.Web.Controllers
             UserService _userService = new UserService();
             DiaryLogService _diaryLogService = new DiaryLogService();
 
-            string userAccount = Session["Account"].ToString();
-            //int userId = Convert.ToInt32(Session["Id"].ToString());
-
+            string userAccount = _userService.GetUserAccountById(userId);
             string userName = _userService.GetUserNameById(userId);
 
             List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate, userId);
 
             DiaryLogNewEditViewModel diaryLogNewEidts = new DiaryLogNewEditViewModel();
+            diaryLogNewEidts.UserId = userId;
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = Convert.ToDateTime(strDate);
