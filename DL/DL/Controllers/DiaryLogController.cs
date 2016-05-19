@@ -88,11 +88,11 @@ namespace DL.Web.Controllers
             var gro = from d in diaryLogs
                       group d by d.DiaryLogDate;
 
-            List<DiaryLogGroupByDateViewModel> diaryLogGroups = new List<DiaryLogGroupByDateViewModel>();
+            List<DiaryLogGroupByDateVM> diaryLogGroups = new List<DiaryLogGroupByDateVM>();
 
             foreach (var g in gro)
             {
-                DiaryLogGroupByDateViewModel diaryLogGroup = new DiaryLogGroupByDateViewModel();
+                DiaryLogGroupByDateVM diaryLogGroup = new DiaryLogGroupByDateVM();
                 List<DiaryLog> diaLogs = new List<DiaryLog>();
 
                 foreach (var item in g)

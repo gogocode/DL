@@ -103,7 +103,7 @@ namespace DL.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(RegisterViewModel registerVM)
+        public ActionResult Register(RegisterVM registerVM)
         {
             if (!ModelState.IsValid)
             {
@@ -121,7 +121,7 @@ namespace DL.Web.Controllers
 
             DateTime nowDate = System.DateTime.Now;
 
-            Mapper.CreateMap<RegisterViewModel, User>();
+            Mapper.CreateMap<RegisterVM, User>();
             User user = Mapper.Map<User>(registerVM);
             user.UserStatus = "0";//0帳號未啟動 1帳號啟動
             user.CreateDate = nowDate;

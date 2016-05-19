@@ -24,7 +24,7 @@ namespace DL.ViewModels.DiaryLog
 
         public string content { get; set; }  // 搜尋條件3
 
-        public IPagedList<DiaryLogGroupByDateViewModel> DiaryLogGroupByDates { get; set; }  // 符合條件資料
+        public IPagedList<DiaryLogGroupByDateVM> DiaryLogGroupByDates { get; set; }  // 符合條件資料
 
         public int Page { get; set; } //頁碼
     }

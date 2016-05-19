@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DL.Web.ViewModels.Account
 {
-    public class RegisterViewModel
+    public class RegisterVM
     {
 
         [Required]

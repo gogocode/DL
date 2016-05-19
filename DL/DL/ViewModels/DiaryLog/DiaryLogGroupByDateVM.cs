@@ -5,7 +5,7 @@ using System.Web;
 
 namespace DL.Web.ViewModels.DiaryLog
 {
-    public class DiaryLogGroupByDateViewModel
+    public class DiaryLogGroupByDateVM
     {
         public DateTime DiaryLogDate { get; set; }
 

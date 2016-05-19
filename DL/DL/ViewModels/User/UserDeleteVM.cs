@@ -6,7 +6,7 @@ using System.Web;
 
 namespace DL.Web.ViewModels.User
 {
-    public class UserDeleteViewModel
+    public class UserDeleteVM
     {
         [Key]
         public int UserId { get; set; }

@@ -1,5 +1,5 @@
 ﻿@using DL.Web.ViewModels.DiaryLogNew
-@model DiaryLogNewEditVM
+@model DiaryLogNewCreateVM
 
 @{
     ViewBag.Title = "新增 工作日誌";
@@ -14,15 +14,42 @@
         });
 
         $.get('/DiaryLogNew/GetDetailPartialView', function (template) {
+            
             $("#TextBoxesGroup").append(template);
+           // $.validator.unobtrusive.parse("form");
             event.preventDefault();
         });
 
         $("#addDetailBtn").click(function () {
             $.get('/DiaryLogNew/GetDetailPartialView', function (template) {
+                
                 $("#TextBoxesGroup").append(template);
                 event.preventDefault();
             });
+        });
+
+
+        $("form").submit(function (e) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AjaxCreate")',
+                data: $("form").serialize(),
+                success: function (result) {
+                    //alert(result);
+                    var date = result.split(",");
+                    if(date[0] === "true")
+                    {
+                        var url = '@Url.Action("Index")';
+                        url = url + "?userId="+@Model.UserId;
+                        window.location.href=url;
+                    }
+                    else
+                    {
+                    }
+                }
+            });
+
+            e.preventDefault();
         });
 
         $("form").makeValidationInline();
@@ -32,12 +59,12 @@
 
 <br />
 
-@using (Html.BeginForm("Create", "DiaryLogNew", FormMethod.Post, new { @id = "createForm" }))
+@using (Html.BeginForm("AjaxCreate", "DiaryLogNew"))
 {
     @Html.AntiForgeryToken()
     <h4><strong>@ViewBag.Title</strong></h4>
     <hr />
-    @Html.HiddenFor(x=>x.UserId)
+    @Html.HiddenFor(x => x.UserId)
     <div class="form-horizontal">
         <div class="form-group">
             <label class="control-label col-md-2">員工編號</label>
@@ -64,8 +91,8 @@
 
     <a id="addDetailBtn" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
     <br />
-        <br />
-        <table id='TextBoxesGroup' class="table table-striped" style="font-size:12px">
+    <br />
+        <table  class="table table-striped" style="font-size:12px">
             <thead>
                 <tr>
                     <th></th>
@@ -77,13 +104,15 @@
                     <th>是否解決</th>
                 </tr>
             </thead>
+            <tbody id="TextBoxesGroup">
+            </tbody>
         </table>
         <div class="form-group">
             <input type="submit" class="col-md-offset-11 btn btn-primary" value="送出" />
         </div>
-}
+        }
 
-<div>
-    @Html.ActionLink("返回列表", "Index", new { userId = Model.UserId}, new { @class = "btn btn-default" })
-</div>
+        <div>
+            @Html.ActionLink("返回列表", "Index", new { userId = Model.UserId }, new { @class = "btn btn-default" })
+        </div>
 

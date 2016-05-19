@@ -6,7 +6,7 @@ using System.Web;
 
 namespace DL.Web.ViewModels.User
 {
-    public class UserEditViewModel
+    public class UserEditVM
     {
         [Key]
         public int UserId { get; set; }

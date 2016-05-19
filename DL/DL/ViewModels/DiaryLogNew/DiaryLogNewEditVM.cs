@@ -26,12 +26,10 @@ namespace DL.Web.ViewModels.DiaryLogNew
         /// <summary>
         /// 新增 時間
         /// </summary>
-        [Required]
-        [Display(Name ="時間")]
         public DateTime DiaryLogDate { get; set; }
 
         //public List<Models.DiaryLog> DiaryLogs {get;set;}
 
-        public ICollection<Models.DiaryLog> DiaryLogs { get; set; }
+        public ICollection<DiaryLogDetailVM> DiaryLogs { get; set; }
     }
 }

@@ -7,9 +7,9 @@ using System.Web;
 
 namespace DL.Web.ViewModels.User
 {
-    public class UserIndexViewModel
+    public class UserIndexVM
     {
-        public UserIndexViewModel()
+        public UserIndexVM()
         {
             Page = 0;
         }

@@ -1,4 +1,5 @@
-﻿using DL.Models;
+﻿using AutoMapper;
+using DL.Models;
 using DL.Models.Repository;
 using DL.Models.Service;
 using DL.Models.Service.DiaryLogs;
@@ -111,12 +112,14 @@ namespace DL.Web.Controllers
             string userName = _userService.GetUserNameById(userId);
 
             List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate,userId);
+            Mapper.CreateMap<DiaryLog, DiaryLogDetailVM>();
+            List<DiaryLogDetailVM> diaryLogsVM = Mapper.Map<List<DiaryLogDetailVM>>(diaryLogs);
 
             DiaryLogNewEditVM diaryLogNewEidts = new DiaryLogNewEditVM();
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = Convert.ToDateTime(strDate);
-            diaryLogNewEidts.DiaryLogs = diaryLogs;
+            diaryLogNewEidts.DiaryLogs = diaryLogsVM;
             diaryLogNewEidts.UserId = userId;
 
             return View(diaryLogNewEidts);
@@ -124,18 +127,49 @@ namespace DL.Web.Controllers
 
         [HttpPost]
         [CheckSessionAcitionFilter]
-        public ActionResult Edit(DiaryLogNewEditVM diaryLogNewEidts)
+        public ActionResult AjaxEdit(DiaryLogNewEditVM model)
         {
 
-            DiaryLogService _diaryLogService = new DiaryLogService();
-            DateTime diaryLogDate = diaryLogNewEidts.DiaryLogDate;
+            if (model.DiaryLogs == null || model.DiaryLogDate == null)
+            {
+                return Json("false,");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return Json("false,");
+            }
+
+            int userId = Convert.ToInt32(Session["Id"].ToString());
             string account = Session["Account"].ToString();
-            int userId = Convert.ToInt32( Session["Id"].ToString());
+            DiaryLogService _diaryLogService = new DiaryLogService();
+            DateTime diaryLogDate = model.DiaryLogDate;
 
-            _diaryLogService.ModidDiaryLogy(diaryLogNewEidts.DiaryLogs.ToList(), diaryLogDate, account, userId);
+            Mapper.CreateMap<DiaryLogDetailVM, DiaryLog>();
+            List<DiaryLog> diaryLogs = Mapper.Map<List<DiaryLog>>(model.DiaryLogs);
+            _diaryLogService.ModidDiaryLogy(diaryLogs, diaryLogDate, account, userId);
 
-            return RedirectToAction("Index",new { userId = userId });
+
+            return Json("true," + userId.ToString());
         }
+
+        //[HttpPost]
+        //[CheckSessionAcitionFilter]
+        //public ActionResult Edit(DiaryLogNewEditVM diaryLogNewEidts)
+        //{
+
+        //    DiaryLogService _diaryLogService = new DiaryLogService();
+        //    DateTime diaryLogDate = diaryLogNewEidts.DiaryLogDate;
+        //    string account = Session["Account"].ToString();
+        //    int userId = Convert.ToInt32( Session["Id"].ToString());
+
+        //    Mapper.CreateMap<DiaryLogDetailVM, DiaryLog>();
+        //    List<DiaryLog> diaryLogs = Mapper.Map<List<DiaryLog>>(diaryLogNewEidts.DiaryLogs);
+
+        //    _diaryLogService.ModidDiaryLogy(diaryLogs, diaryLogDate, account, userId);
+
+        //    return RedirectToAction("Index",new { userId = userId });
+        //}
 
         #endregion
 
@@ -150,7 +184,7 @@ namespace DL.Web.Controllers
             int userId = Convert.ToInt32(Session["Id"].ToString());
             string userName = _userService.GetUserNameById(userId);
 
-            DiaryLogNewEditVM diaryLogNewEidts = new DiaryLogNewEditVM();
+            DiaryLogNewCreateVM diaryLogNewEidts = new DiaryLogNewCreateVM();
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = DateTime.Now.Date;
@@ -161,25 +195,73 @@ namespace DL.Web.Controllers
 
         [HttpPost]
         [CheckSessionAcitionFilter]
-        public ActionResult Create(DiaryLogNewCreateVM model)
+        public ActionResult AjaxCreate(DiaryLogNewCreateVM model)
         {
+
             if (model.DiaryLogs == null || model.DiaryLogDate == null)
             {
-                return View(model);
+                return Json("false,");
             }
 
-            int userId = Convert.ToInt32( Session["Id"].ToString());
+            if (!ModelState.IsValid)
+            {
+                return Json("false,");
+            }
+
+            int userId = Convert.ToInt32(Session["Id"].ToString());
             string account = Session["Account"].ToString();
             DiaryLogService _diaryLogService = new DiaryLogService();
 
-
             foreach (var item in model.DiaryLogs)
             {
-                _diaryLogService.InsertDiaryLog(item, model.DiaryLogDate, account, userId);
+                DiaryLog diaryLog = new DiaryLog();
+                diaryLog.DiaryLogItem = item.DiaryLogItem;
+                diaryLog.DiaryLogContents = item.DiaryLogContents;
+                diaryLog.DiaryLogStatus = item.DiaryLogStatus;
+                diaryLog.DiaryLogHours = item.DiaryLogHours;
+                diaryLog.DiaryLogSituation = item.DiaryLogSituation;
+                diaryLog.DiaryLogSolve = item.DiaryLogSolve;
+
+                _diaryLogService.InsertDiaryLog(diaryLog, model.DiaryLogDate, account, userId);
             }
 
-            return RedirectToAction("Index",new { userId = userId });
+            return Json("true," + userId.ToString());
         }
+
+        //[HttpPost]
+        //[CheckSessionAcitionFilter]
+        //public ActionResult Create(DiaryLogNewCreateVM model)
+        //{
+        //    if (model.DiaryLogs == null || model.DiaryLogDate == null)
+        //    {
+        //        return View(model);
+        //    }
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+
+        //        int userId = Convert.ToInt32( Session["Id"].ToString());
+        //    string account = Session["Account"].ToString();
+        //    DiaryLogService _diaryLogService = new DiaryLogService();
+
+
+        //    foreach (var item in model.DiaryLogs)
+        //    {
+        //        DiaryLog diaryLog = new DiaryLog();
+        //        diaryLog.DiaryLogItem = item.DiaryLogItem;
+        //        diaryLog.DiaryLogContents = item.DiaryLogContents;
+        //        diaryLog.DiaryLogStatus = item.DiaryLogStatus;
+        //        diaryLog.DiaryLogHours = item.DiaryLogHours;
+        //        diaryLog.DiaryLogSituation = item.DiaryLogSituation;
+        //        diaryLog.DiaryLogSolve = item.DiaryLogSolve;
+
+        //        _diaryLogService.InsertDiaryLog(diaryLog, model.DiaryLogDate, account, userId);
+        //    }
+
+        //    return RedirectToAction("Index",new { userId = userId });
+        //}
 
         #endregion
 
@@ -206,12 +288,15 @@ namespace DL.Web.Controllers
 
             List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate, userId);
 
+            Mapper.CreateMap<DiaryLog, DiaryLogDetailVM>();
+            List<DiaryLogDetailVM> diaryLogsVM = Mapper.Map<List<DiaryLogDetailVM>>(diaryLogs);
+
             DiaryLogNewEditVM diaryLogNewEidts = new DiaryLogNewEditVM();
             diaryLogNewEidts.UserId = userId;
             diaryLogNewEidts.UserAccount = userAccount;
             diaryLogNewEidts.UserName = userName;
             diaryLogNewEidts.DiaryLogDate = Convert.ToDateTime(strDate);
-            diaryLogNewEidts.DiaryLogs = diaryLogs;
+            diaryLogNewEidts.DiaryLogs = diaryLogsVM;
 
             return View(diaryLogNewEidts);
         }
@@ -222,6 +307,10 @@ namespace DL.Web.Controllers
         {
             return PartialView("_DiaryLogDetailPartialView");
         }
+
+        
+
+
 
     }
 }

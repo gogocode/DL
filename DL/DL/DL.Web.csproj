@@ -212,6 +212,7 @@
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\DiaryLogController.cs" />
     <Compile Include="Controllers\DiaryLogNewController.cs" />
+    <Compile Include="Controllers\Test\TestController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\Utility\ValidateController.cs" />
     <Compile Include="Global.asax.cs">
@@ -225,18 +226,20 @@
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Account\RegisterVM.cs" />
+    <Compile Include="ViewModels\DiaryLogNew\DiaryLogDetailVM.cs" />
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewCreateVM.cs" />
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewEditVM.cs" />
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewIndexVM.cs" />
     <Compile Include="ViewModels\DiaryLogNew\DiaryLogNewMasterIndexVM.cs" />
     <Compile Include="ViewModels\DiaryLogNew\UserGroupVM.cs" />
-    <Compile Include="ViewModels\DiaryLog\DiaryLogGroupByDateViewModel.cs" />
-    <Compile Include="ViewModels\DiaryLog\DiaryLogSearchViewModel.cs" />
-    <Compile Include="ViewModels\DiaryLog\DiaryLogViewModel.cs" />
-    <Compile Include="ViewModels\User\UserDeleteViewModel.cs" />
-    <Compile Include="ViewModels\User\UserIndexViewModel.cs" />
-    <Compile Include="ViewModels\User\UserEditViewModel.cs" />
+    <Compile Include="ViewModels\DiaryLog\DiaryLogGroupByDateVM.cs" />
+    <Compile Include="ViewModels\DiaryLog\DiaryLogSearchVM.cs" />
+    <Compile Include="ViewModels\DiaryLog\DiaryLogVM.cs" />
+    <Compile Include="ViewModels\Test\TestValidateFrontEnd.cs" />
+    <Compile Include="ViewModels\User\UserDeleteVM.cs" />
+    <Compile Include="ViewModels\User\UserIndexVM.cs" />
+    <Compile Include="ViewModels\User\UserEditVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -481,6 +484,7 @@
     <Content Include="Views\DiaryLogNew\Create.cshtml" />
     <Content Include="Views\DiaryLogNew\MasterIndex.cshtml" />
     <Content Include="Views\DiaryLogNew\Detail.cshtml" />
+    <Content Include="Views\Test\ValidateFrontEnd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

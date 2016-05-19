@@ -31,7 +31,7 @@ namespace DL.Web.Controllers
         public ActionResult Index()
         {
             UserService _userService = new UserService();
-            UserIndexViewModel userIdexVM = new UserIndexViewModel();
+            UserIndexVM userIdexVM = new UserIndexVM();
             List<User> users = _userService.FindAllUsers().ToList();
 
             userIdexVM.Users = users.OrderBy(p => p.UserStatus).ToPagedList(userIdexVM.Page > 0 ? userIdexVM.Page - 1 : 0, PageSize);
@@ -41,7 +41,7 @@ namespace DL.Web.Controllers
 
         [HttpPost]
         [CheckSessionAcitionFilter]
-        public ActionResult Index(UserIndexViewModel userIdexVM)
+        public ActionResult Index(UserIndexVM userIdexVM)
         {
             UserService _userService = new UserService();
 
@@ -73,8 +73,8 @@ namespace DL.Web.Controllers
                 return HttpNotFound();
             }
 
-            Mapper.CreateMap<User, UserEditViewModel>();
-            UserEditViewModel userVM = Mapper.Map<UserEditViewModel>(user);
+            Mapper.CreateMap<User, UserEditVM>();
+            UserEditVM userVM = Mapper.Map<UserEditVM>(user);
             userVM.ConfirmPassword = user.UserPassword;
 
             return View(userVM);
@@ -83,7 +83,7 @@ namespace DL.Web.Controllers
         [HttpPost]
         [CheckSessionAcitionFilter]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(UserEditViewModel userVM)
+        public ActionResult Edit(UserEditVM userVM)
         {
             User user = _genericRepository.GetById(userVM.UserId);
 
@@ -121,8 +121,8 @@ namespace DL.Web.Controllers
                 return HttpNotFound();
             }
 
-            Mapper.CreateMap<User, UserDeleteViewModel>();
-            UserDeleteViewModel userDeleteVM = Mapper.Map<UserDeleteViewModel>(user);
+            Mapper.CreateMap<User, UserDeleteVM>();
+            UserDeleteVM userDeleteVM = Mapper.Map<UserDeleteVM>(user);
 
             return View(userDeleteVM);
         }
