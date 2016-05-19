@@ -1,4 +1,5 @@
 ﻿using DL.Models.Repository.Class.Base;
+using DL.Models.Service.ServiceModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DL.Models.Service.Users
 {
-    public class UserService :IDisposable
+    public class UserService : IDisposable
     {
         public bool IsUserAccountExist(string userAccount)
         {
@@ -35,7 +36,7 @@ namespace DL.Models.Service.Users
             using (UserRepository _repo = new UserRepository())
             {
                 return _repo.GetById(userId);
-            } 
+            }
         }
 
         public List<User> FindUsersByAccount(string account)
@@ -70,6 +71,26 @@ namespace DL.Models.Service.Users
         }
 
         /// <summary>
+        /// 編輯User
+        /// </summary>
+        /// <param name="userEditSV"></param>
+        public void ModifyUser(UserEditSV userEditSV)
+        {
+            using (UserRepository _repo = new UserRepository())
+            {
+                User user = GetUserById(userEditSV.UserId);
+
+                user.UserName = userEditSV.UserName;
+                user.UserPassword = userEditSV.UserPassword;
+                user.UserEmail = userEditSV.UserEmail;
+                user.UpdateDate = userEditSV.UpdateDate;
+                user.UpdateId = userEditSV.UpdateId;
+
+                _repo.Edit(user);
+            }
+        }
+
+        /// <summary>
         /// 驗證使用者是否登入成功
         /// </summary>
         /// <param name="userAccount">登入帳號</param>
@@ -78,9 +99,7 @@ namespace DL.Models.Service.Users
         public ValidateLoginSM ValidateLogin(string userAccount, string userPassword)
         {
 
-            //驗證
-            //檢查 Username, Password 是否正確
-            User user = GetUser( userAccount,  userPassword);
+            User user = GetUser(userAccount, userPassword);
             ValidateLoginSM validateLoginSV = new ValidateLoginSM();
 
             if (user != null)

@@ -1,5 +1,6 @@
 ﻿using DL.Models;
 using DL.Models.Repository;
+using DL.Models.Service.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,20 @@ namespace DL.Web.Controllers
 {
     public class ValidateController : Controller
     {
-        GenericRepository<User> _genericRepository = null;
-
-
-        public ValidateController()
-        {
-            this._genericRepository = new GenericRepository<User>(new DiaryLogDBEntities());
-
-        }
 
         public ActionResult CheckUserName(string UserAccount)
         {
-            bool isValidate = true;
-            //if (Url.IsLocalUrl(Request.Url.AbsoluteUri))
-            //{
+            UserService _userService = new UserService();
 
-            User user = _genericRepository.GetAll().Where(x => x.UserAccount == UserAccount).FirstOrDefault();
+            bool isValidate = true;
+
+            User user = _userService.FindUsersByAccount(UserAccount).FirstOrDefault();
 
             if (user != null)
             {
                 isValidate = false;
             }
 
-            //}
-            // Remote 驗證是使用 Get 因此要開放
             return Json(isValidate, JsonRequestBehavior.AllowGet);
         }
     }

@@ -33,10 +33,7 @@ namespace DL.Web.ViewModels.User
         [Display(Name = "電子郵件")]
         public string UserEmail { get; set; }
 
-        public string CreateId { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public string UpdateId { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string UserStatus { get; set; }
+        [DataType(DataType.Password)]
+        public string OriginPassword { get; set; }
     }
 }

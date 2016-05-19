@@ -1,12 +1,16 @@
 ﻿@model DL.Web.ViewModels.User.UserDeleteVM
 
 @{
-    ViewBag.Title = "確定刪除該筆資料?";
+    ViewBag.Title = "[帳號/刪除]";
+    ViewBag.SubTitle = "確定刪除該筆資料?";
 }
 
+<br />
+<label class="title">@ViewBag.Title</label>
+<hr />
+<h4><strong>@ViewBag.SubTitle</strong></h4>
+
 <div>
-    <h4 style="color:red"> @ViewBag.Title</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.UserAccount)

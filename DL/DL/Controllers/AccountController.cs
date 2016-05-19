@@ -24,6 +24,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DL.Models.Repository.Class;
+using DL.Web.Utilities;
 
 namespace DL.Web.Controllers
 {
@@ -50,9 +51,11 @@ namespace DL.Web.Controllers
 
             // 登入時清空所有 Session 資料
             Session.RemoveAll();
+            //MD5加密密碼
+            string encrypt = MD5Encoder.Encrypt(model.Password);
             UserService _userService = new UserService();
 
-            ValidateLoginSM validateLoginSV = _userService.ValidateLogin(model.AccountId, model.Password);
+            ValidateLoginSM validateLoginSV = _userService.ValidateLogin(model.AccountId, encrypt);
             int loginStatus = validateLoginSV.LoginStatus;
 
             if (loginStatus == 0)
@@ -99,7 +102,10 @@ namespace DL.Web.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            return View();
+            RegisterVM registerVM = new RegisterVM();
+            registerVM.UserEmail = "@86shop.com.tw";
+
+            return View(registerVM);
         }
 
         [HttpPost]
@@ -112,17 +118,11 @@ namespace DL.Web.Controllers
 
             _userService = new UserService();
 
-            if (_userService.IsUserAccountExist(registerVM.UserAccount))
-            {
-                ModelState.AddModelError(string.Empty, "員工編號已存在。");
-
-                return View(registerVM);
-            }
-
             DateTime nowDate = System.DateTime.Now;
 
             Mapper.CreateMap<RegisterVM, User>();
             User user = Mapper.Map<User>(registerVM);
+            user.UserPassword = MD5Encoder.Encrypt(registerVM.UserPassword);
             user.UserStatus = "0";//0帳號未啟動 1帳號啟動
             user.CreateDate = nowDate;
             user.CreateId = "9999";

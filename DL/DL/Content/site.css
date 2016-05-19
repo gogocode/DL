@@ -60,3 +60,10 @@ textarea {
     text-decoration: none;
 }
 
+.title
+{
+    font:bold;
+    font-size:20px;
+    color:cornflowerblue;
+}
+

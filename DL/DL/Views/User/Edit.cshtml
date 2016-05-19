@@ -1,7 +1,7 @@
 ﻿@model DL.Web.ViewModels.User.UserEditVM
 
 @{
-    ViewBag.Title = "帳號編輯";
+    ViewBag.Title = "[帳號/編輯]";
 }
 
 <script type="text/javascript">
@@ -13,19 +13,18 @@
 </script>
 
 <br />
-
+<label class="title">@ViewBag.Title</label>
+<hr />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <h4><strong>@ViewBag.Title</strong></h4>
-    <hr />
-
     <div class="form-horizontal">
         
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.UserId)
+        @Html.HiddenFor(model => model.OriginPassword)
         <div class="form-group">
             @Html.LabelFor(model => model.UserAccount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -33,6 +32,9 @@
                 @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        @if(!(Convert.ToBoolean(TempData["IsSupperUser"]) == true))
+        {
 
         <div class="form-group">
             @Html.LabelFor(model => model.UserPassword, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -49,6 +51,13 @@
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        }
+        else
+        {
+            @Html.HiddenFor(model => model.UserPassword)
+            @Html.HiddenFor(model => model.ConfirmPassword)
+        }
 
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -74,6 +83,9 @@
     </div>
 }
 
+@if ((Convert.ToBoolean(TempData["IsSupperUser"]) == true))
+{
 <div>
     @Html.ActionLink("返回列表", "Index", null, new { @class = "btn btn-default" })
 </div>
+}

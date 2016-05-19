@@ -2,7 +2,8 @@
 @model DiaryLogNewIndexVM
 
 @{
-    ViewBag.Title = "輸入查詢條件";
+    ViewBag.Title = "[工作日誌/查詢]";
+    ViewBag.SubTitle = "輸入查詢條件";
 }
 
 <script type="text/javascript">
@@ -17,7 +18,10 @@
 </script>
 
 <br />
-<h4><strong>@ViewBag.Title</strong></h4>
+<label class="title">@ViewBag.Title</label>
+<hr />
+
+<h4><strong>@ViewBag.SubTitle</strong></h4>
 
 @using (Html.BeginForm("Index", "DiaryLogNew", FormMethod.Post, new { id = "diaryLogFrom", @class = "form-inline", role = "form" }))
 {

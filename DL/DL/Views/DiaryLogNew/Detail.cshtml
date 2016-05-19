@@ -2,7 +2,7 @@
 @model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title = "工作日誌 " + Model.UserName + "的明細";
+    ViewBag.Title =  Model.UserName + "的工作日誌明細";
 }
 
 <script type="text/javascript">
@@ -15,13 +15,12 @@
 </script>
 
 <br />
+<label class="title">@ViewBag.Title</label>
+<hr />
 
 @using (Html.BeginForm("Detail", "DiaryLogNew", FormMethod.Post, new { @id = "detailForm" }))
 {
     @Html.AntiForgeryToken()
-
-    <h4><strong>@ViewBag.Title</strong></h4>
-    <hr />
     <div class="form-horizontal">
         <div class="form-group">
             <label class="control-label col-md-2">員工編號</label>

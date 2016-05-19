@@ -55,9 +55,8 @@ namespace DL.Web.Controllers
             string account = Session["Account"].ToString();
             ViewBag.Account = account;
 
-            DiaryLogNewIndexVM diaryLogNewIndexVM = new DiaryLogNewIndexVM();
+            DiaryLogNewIndexVM diaryLogNewIndexVM = model;
             diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
-            //diaryLogNewIndexVM.UserId = userId;
 
             return View("Index",diaryLogNewIndexVM);
         }
@@ -90,7 +89,7 @@ namespace DL.Web.Controllers
             .Select(group => new UserGroupVM { UserId = group.Key.UserId, UserAccount = group.Key.UserAccount, UserName = group.Key.UserName })
             .ToList();
 
-            DiaryLogNewMasterIndexVM diaryLogNewMasterIndexVM = new DiaryLogNewMasterIndexVM();
+            DiaryLogNewMasterIndexVM diaryLogNewMasterIndexVM = model;
             diaryLogNewMasterIndexVM.UserGroups = userGroupVM.OrderBy(x => x.UserAccount).ToPagedList(diaryLogNewMasterIndexVM.Page > 0 ? diaryLogNewMasterIndexVM.Page - 1 : 0, PageSize);
 
             return View(diaryLogNewMasterIndexVM);

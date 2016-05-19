@@ -24,7 +24,7 @@
     </Key>
     <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserAccount" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="UserPassword" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="UserPassword" Type="varchar" MaxLength="32" Nullable="false" />
     <Property Name="UserName" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="UserEmail" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="UserStatus" Type="varchar" MaxLength="1" />

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using DL.Models;
 using DL.Models.Repository;
+using DL.Models.Service.ServiceModels.User;
 using DL.Models.Service.Users;
 using DL.Web.ActionFilter;
+using DL.Web.Utilities;
 using DL.Web.ViewModels.User;
 using MvcPaging;
 using System;
@@ -66,7 +68,8 @@ namespace DL.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            User user = _genericRepository.GetById(id.Value);
+            UserService _userService = new UserService();
+            User user = _userService.GetUserById(id.Value);
 
             if (user == null)
             {
@@ -75,7 +78,15 @@ namespace DL.Web.Controllers
 
             Mapper.CreateMap<User, UserEditVM>();
             UserEditVM userVM = Mapper.Map<UserEditVM>(user);
+
+            //SupperUser不可更改員工密碼
+            if (Session["Account"].ToString() == "9999")
+            {
+                TempData["IsSupperUser"] = true;
+            }  
+
             userVM.ConfirmPassword = user.UserPassword;
+            userVM.OriginPassword = user.UserPassword;
 
             return View(userVM);
         }
@@ -85,22 +96,42 @@ namespace DL.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserEditVM userVM)
         {
-            User user = _genericRepository.GetById(userVM.UserId);
+            UserService _userService = new UserService();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                user.UserName = userVM.UserName;
-                user.UserPassword = userVM.UserPassword;
-                user.UserEmail = userVM.UserEmail;
-                user.UpdateDate = System.DateTime.Now;
-                user.UpdateId = Session["Account"].ToString();
-
-                _genericRepository.Edit(user);
-
-                return RedirectToAction("Index");
+                return View(userVM);
             }
 
-            return View(userVM);
+            //MD5無法解密，故用此判斷是否更改過密碼
+            //無更改過密碼，已經為MD5密碼
+            if (userVM.UserPassword.Equals(userVM.OriginPassword))
+            {
+            }
+            else//更改過密碼，需加密為MD5
+            {
+                userVM.UserPassword = MD5Encoder.Encrypt(userVM.UserPassword);
+            }
+
+            Mapper.CreateMap<UserEditVM, UserEditSV>();
+            UserEditSV userEditSV = Mapper.Map<UserEditSV>(userVM);
+            userEditSV.UpdateDate = System.DateTime.Now;
+            userEditSV.UpdateId = Session["Account"].ToString();
+
+            _userService.ModifyUser(userEditSV);
+
+            if(Session["Account"].Equals("9999"))
+            { 
+            return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("EditSuccess");
+        }
+
+        [HttpGet]
+        public ActionResult EditSuccess()
+        {
+            return View();
         }
 
         #endregion

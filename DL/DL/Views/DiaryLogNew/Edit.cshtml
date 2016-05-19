@@ -2,7 +2,7 @@
 @model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title = "編輯 工作日誌";
+    ViewBag.Title = "[工作日誌/編輯]";
 }
 
 <script type="text/javascript">
@@ -81,12 +81,12 @@
 </script>
 
 <br />
+<label class="title">@ViewBag.Title</label>
+<hr />
 
 @using (Html.BeginForm("AjaxEdit", "DiaryLogNew"))
 {
         @Html.AntiForgeryToken()
-        <h4><strong>@ViewBag.Title</strong></h4>
-        <hr />
 
         @Html.HiddenFor(m => m.DiaryLogDate)
         <div class="form-horizontal">

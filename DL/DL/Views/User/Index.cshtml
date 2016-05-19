@@ -2,11 +2,14 @@
 @model UserIndexVM
 
 @{
-    ViewBag.Title = "輸入查詢條件";
+    ViewBag.Title = "[帳號/查詢]";
+    ViewBag.SubTitle = "輸入查詢條件";
 }
 
 <br />
-<h4><strong>@ViewBag.Title</strong></h4>
+<label class="title">@ViewBag.Title</label>
+<hr />
+<h4><strong>@ViewBag.SubTitle</strong></h4>
 
 @using (Html.BeginForm("Index", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "userFrom", @class = "form-inline", role = "form" }))
 {
@@ -80,8 +83,10 @@
                         else
                         {
                             <td>
+                                @if (item.UserAccount != "9999") { 
                                 <a class="btn btn-primary" href="/User/Edit/@item.UserId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
                                 <a class="btn btn-danger" href="/User/Delete/@item.UserId"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>刪除</a>
+                                }
                             </td>
                         }
                     </tr>

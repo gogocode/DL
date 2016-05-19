@@ -8,6 +8,7 @@
 * Return Code: none
 *
 *****************************************************************/
+using DL.Web.Utilities.Attribute;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -40,6 +41,7 @@ namespace DL.Web.ViewModels.Account
         [Required]
         [EmailAddress]
         [Display(Name = "電子郵件")]
+        [Email(ErrorMessage="請輸入正確格式。XXX@86shop.com.tw")]
         public string UserEmail { get; set; }
     }
 }

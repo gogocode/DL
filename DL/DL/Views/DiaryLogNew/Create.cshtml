@@ -2,7 +2,7 @@
 @model DiaryLogNewCreateVM
 
 @{
-    ViewBag.Title = "新增 工作日誌";
+    ViewBag.Title = "[工作日誌/新增]";
 }
 
 <script type="text/javascript">
@@ -58,12 +58,13 @@
 </script>
 
 <br />
+<label class="title">@ViewBag.Title</label>
+<hr />
 
 @using (Html.BeginForm("AjaxCreate", "DiaryLogNew"))
 {
     @Html.AntiForgeryToken()
-    <h4><strong>@ViewBag.Title</strong></h4>
-    <hr />
+
     @Html.HiddenFor(x => x.UserId)
     <div class="form-horizontal">
         <div class="form-group">

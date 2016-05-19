@@ -2,11 +2,12 @@
 @model DiaryLogNewMasterIndexVM
 
 @{
-    ViewBag.Title = "輸入查詢條件";
+    ViewBag.Title = "[工作日誌/查詢員工]";
 }
 
 <br />
-<h4><strong>@ViewBag.Title</strong></h4>
+<label class="title">@ViewBag.Title</label>
+<hr />
 
 @using (Html.BeginForm("MasterIndex", "DiaryLogNew", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "diaryLogFrom", @class = "form-inline", role = "form" }))
 {
