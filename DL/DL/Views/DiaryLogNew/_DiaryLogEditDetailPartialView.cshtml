@@ -27,8 +27,7 @@
             @Html.TextBoxFor(m => m.DiaryLogSolve, new { @class = "text-box single-line", @style = "width:180px" })
         </td>
         <td>
-            @*<button class="btn btn-danger" onclick="$(this).parents('tr').remove();">刪除</button>*@
-            <button class="btn btn-danger" onclick="deleteDetail('@actdetailNo')">刪除</button>
+            <button class="btn btn-danger" onclick="deleteDetail('@actdetailNo')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>刪除</button>
         </td>
                 }
 </tr>

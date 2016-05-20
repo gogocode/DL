@@ -20,7 +20,7 @@ namespace DL.Web.ViewModels.Account
         [Required]
         [Display(Name = "員工編號")]
         [StringLength(4)]
-        [System.Web.Mvc.Remote("CheckUserName", "Validate", ErrorMessage = "此帳號已申請過")]
+        [System.Web.Mvc.Remote("CheckUserName", "Validate", ErrorMessage = "員工編號已申請過")]
         public string UserAccount { get; set; }
 
         [Required]

@@ -16,9 +16,8 @@ namespace DL.Web.ViewModels.DiaryLogNew
 
         [Required]
         [Display(Name ="時間")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime DiaryLogDate { get; set; }
-
-        //public List<Models.DiaryLog> DiaryLogs {get;set;}
 
         public ICollection<DiaryLogDetailVM> DiaryLogs { get; set; }
     }
