@@ -19,13 +19,15 @@ namespace DL.Web.ViewModels.Account
 
         [Required]
         [Display(Name = "員工編號")]
-        [StringLength(4)]
+        [StringLength(4,ErrorMessage = "至少輸入4個字元",MinimumLength =4)]
+        [RegularExpression("^\\d{4,}$",ErrorMessage ="輸入的格式不正確，正確的格式為4個數字")]
         [System.Web.Mvc.Remote("CheckUserName", "Validate", ErrorMessage = "員工編號已申請過")]
         public string UserAccount { get; set; }
 
         [Required]
         [Display(Name = "密碼")]
         [DataType(DataType.Password)]
+        [StringLength(18, ErrorMessage = "至少輸入4個字元", MinimumLength = 4)]
         public string UserPassword { get; set; }
 
         [Required]
