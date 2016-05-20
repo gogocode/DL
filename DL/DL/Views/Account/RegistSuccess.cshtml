@@ -5,14 +5,11 @@
     ViewBag.SubTitle = "帳號需等待管理員啟動，才能登入。";
 }
 
-<h3>@ViewBag.Title</h3>
+<br />
+<label class="title">@ViewBag.Title</label>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
     <h4 style="color:red">@ViewBag.SubTitle</h4>
-    <hr />
-}
+
 
 <div>
     @Html.ActionLink("登入畫面", "Login", null, new { @class = "btn btn-default" })

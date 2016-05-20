@@ -1,30 +1,24 @@
 ﻿using AutoMapper;
 using DL.Models;
-using DL.Models.Repository;
 using DL.Models.Service.ServiceModels.User;
 using DL.Models.Service.Users;
 using DL.Web.ActionFilter;
+using DL.Web.Controllers.Base;
 using DL.Web.Utilities;
 using DL.Web.ViewModels.User;
 using MvcPaging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DL.Web.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
-        GenericRepository<User> _genericRepository = null;
+
         private int PageSize = Web.Properties.Settings.Default.PageSize;
 
-        public UserController()
-        {
-            this._genericRepository = new GenericRepository<User>(new DiaryLogDBEntities());
-        }
 
         #region 查詢
 
@@ -34,9 +28,9 @@ namespace DL.Web.Controllers
         {
             UserService _userService = new UserService();
             UserIndexVM userIdexVM = new UserIndexVM();
-            List<User> users = _userService.FindAllUsers().ToList();
+            List<User> users = _userService.FindAllUsers();
 
-            userIdexVM.Users = users.OrderBy(p => p.UserStatus).ToPagedList(userIdexVM.Page > 0 ? userIdexVM.Page - 1 : 0, PageSize);
+            userIdexVM.Users = users.OrderBy(p => p.UserAccount).ToPagedList(userIdexVM.Page > 0 ? userIdexVM.Page - 1 : 0, PageSize);
 
             return View(userIdexVM);
         }
@@ -47,9 +41,9 @@ namespace DL.Web.Controllers
         {
             UserService _userService = new UserService();
 
-            List<User> users = _userService.FindUsersByAccount(userIdexVM.UserAccount);
+            List<User> users = _userService.FindUsers(userIdexVM.UserAccount,userIdexVM.UserName);
 
-            userIdexVM.Users = users.OrderBy(p => p.UserStatus).ToPagedList(userIdexVM.Page > 0 ? userIdexVM.Page - 1 : 0, PageSize);
+            userIdexVM.Users = users.OrderBy(p => p.UserAccount).ToPagedList(userIdexVM.Page > 0 ? userIdexVM.Page - 1 : 0, PageSize);
 
             return View(userIdexVM);
         }
@@ -145,7 +139,10 @@ namespace DL.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = _genericRepository.GetById(id.Value);
+
+            UserService _userService = new UserService();
+
+            User user = _userService.GetUserById(id.Value);
 
             if (user == null)
             {
@@ -164,45 +161,37 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = _genericRepository.GetById(id);
-            _genericRepository.Delete(user);
+            UserService _userService = new UserService();
+            _userService.DeleteUserById(id);
 
             return RedirectToAction("Index");
         }
 
         #endregion
 
-        #region 啟動
+        #region 啟動&停用
 
         [HttpGet]
         [CheckSessionAcitionFilter]
         public ActionResult StartUp(int id)
         {
-            User user = _genericRepository.GetById(id);
-            user.UserStatus = "1";
-            _genericRepository.Edit(user);
+            UserService _userService = new UserService();
+            _userService.StartUp(id);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [CheckSessionAcitionFilter]
+        public ActionResult EndUp(int id)
+        {
+            UserService _userService = new UserService();
+            _userService.EndUp(id);
 
             return RedirectToAction("Index");
         }
 
         #endregion
 
-        #region Private Methods
-
-        #region Private Methods
-
-        private bool IsSessionExist()
-        {
-            if (Session["Id"] == null || Session["Account"] == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #endregion
     }
 }

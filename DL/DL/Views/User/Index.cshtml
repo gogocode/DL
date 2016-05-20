@@ -15,7 +15,11 @@
 {
     <div class="form-group">
         <label class="sr-only" for="inputfile">員工編號</label>
-        @Html.TextBox("UserAccount", "", new { @placeholder = "請輸入員工編號", @class = "form-control" })
+        @Html.TextBox("UserAccount", Model.UserAccount, new { @placeholder = "請輸入員工編號", @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label class="sr-only" for="inputfile">姓名</label>
+        @Html.TextBox("UserName", Model.UserName, new { @placeholder = "請輸入姓名", @class = "form-control" })
     </div>
     <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>查詢</button>
 
@@ -65,28 +69,22 @@
                             @Html.DisplayFor(modelItem => item.UserEmail)
                         </td>
                         <td>
-                            @if (item.UserStatus == "1")
+                            @if (item.UserStatus == "1" && item.UserAccount != "9999")
                         {
-                                @("已啟動")
+                                <a class="btn btn-success" href="/User/EndUp/@item.UserId"><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>停用</a>
                             }
-                            else
+                            else if(item.UserAccount != "9999")
                             {
-                                @("未啟動")
+                                <a class="btn btn-info" href="/User/StartUp/@item.UserId"><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>啟動</a>
                             }
                         </td>
-
-                        @if (item.UserStatus != "1")
+                        
+                        @if (item.UserStatus == "1")
                         {
                             <td>
-                                <a class="btn btn-info" href="/User/StartUp/@item.UserId"><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>啟動</a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
+                                <a class="btn btn-primary" href="/User/Edit/@item.UserId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
                                 @if (item.UserAccount != "9999")
                                 {
-                                    <a class="btn btn-primary" href="/User/Edit/@item.UserId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
                                     <a class="btn btn-danger" href="/User/Delete/@item.UserId"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>刪除</a>
                                 }
                             </td>

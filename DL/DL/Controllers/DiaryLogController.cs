@@ -23,10 +23,11 @@ using MvcPaging;
 using DL.Models.Repository;
 using AutoMapper;
 using DL.Web.ViewModels.DiaryLog;
+using DL.Web.Controllers.Base;
 
 namespace DL.Web.Controllers
 {
-    public class DiaryLogController : Controller
+    public class DiaryLogController : BaseController
     {
         GenericRepository<DiaryLog> _genericRepository = null;
         private int PageSize = Web.Properties.Settings.Default.PageSize;

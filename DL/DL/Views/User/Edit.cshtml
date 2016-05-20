@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        @if(!(Convert.ToBoolean(TempData["IsSupperUser"]) == true))
+        @if(!(Convert.ToBoolean(TempData["IsSupperUser"]) == true) || (Model.UserAccount == "9999"))
         {
 
         <div class="form-group">

@@ -41,11 +41,11 @@ namespace DL.Models.Service.Users
 
         public List<User> FindUsersByAccount(string account)
         {
-            List<User> users = FindAllUsers();
+            IQueryable<User> users = GetAllUsers();
 
             if (!string.IsNullOrWhiteSpace(account))
             {
-                users = FindAllUsers().Where(x => x.UserAccount.Contains(account)).ToList();
+                users = GetAllUsers().Where(x => x.UserAccount.Contains(account));
             }
 
             return users.ToList();
@@ -53,10 +53,32 @@ namespace DL.Models.Service.Users
 
         public List<User> FindAllUsers()
         {
-            using (UserRepository _repo = new UserRepository())
+            return GetAllUsers().ToList();
+        }
+        
+
+        public IQueryable<User> GetAllUsers()
+        {
+            UserRepository _repo = new UserRepository();
+      
+            return _repo.GetAll();
+        }
+
+        public List<User> FindUsers(string account,string name)
+        {
+            IQueryable<User> users = GetAllUsers();
+
+            if (!string.IsNullOrWhiteSpace(account))
             {
-                return _repo.GetAll().ToList();
+                users = users.Where(x => x.UserAccount.Contains(account));
             }
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                users = users.Where(x => x.UserName.Contains(name));
+            }
+
+            return users.ToList();
         }
 
 
@@ -118,6 +140,35 @@ namespace DL.Models.Service.Users
 
             validateLoginSV.LoginStatus = 0;
             return validateLoginSV;
+        }
+
+        public void StartUp(int id)
+        {
+            using (UserRepository _repo = new UserRepository())
+            {
+                User user = _repo.GetById(id);
+                user.UserStatus = "1";
+                _repo.Edit(user);
+            }
+        }
+
+        public void EndUp(int id)
+        {
+            using (UserRepository _repo = new UserRepository())
+            {
+                User user = _repo.GetById(id);
+                user.UserStatus = "0";
+                _repo.Edit(user);
+            }
+        }
+
+        public void DeleteUserById(int id)
+        {
+            using (UserRepository _repo = new UserRepository())
+            {
+                User user = _repo.GetById(id);
+                _repo.Delete(user);
+            }
         }
 
         public void Dispose()
