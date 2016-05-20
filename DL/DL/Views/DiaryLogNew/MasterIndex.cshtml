@@ -2,7 +2,7 @@
 @model DiaryLogNewMasterIndexVM
 
 @{
-    ViewBag.Title = "[工作日誌/查詢員工]";
+    ViewBag.Title = "[日誌/查詢員工]";
 }
 
 <br />
@@ -59,7 +59,7 @@
                             @item.UserName
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="/DiaryLogNew/Index/?userId=@item.UserId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>明細</a>
+                            <a class="btn btn-info" href="/DiaryLogNew/Index/?userId=@item.UserId"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>明細</a>
                         </td>
                     </tr>
                 }

@@ -25,7 +25,7 @@ namespace DL.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<DiaryLog> DiaryLog { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<DiaryLog> DiaryLog { get; set; }
     }
 }

@@ -1,6 +1,5 @@
-﻿
-@if(Session["Id"] != null && Session["Account"] != null)
-{ 
+﻿@if (Session["Id"] != null && Session["Account"] != null)
+{
     <ul class="nav navbar-nav navbar-right">
         <li>
             <a href="" style="color:white;" title="員工編號"><span class="glyphicon glyphicon-user" aria-hidden="false"></span>員工編號:@Session["Account"].ToString()</a>

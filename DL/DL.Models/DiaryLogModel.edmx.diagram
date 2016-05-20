@@ -5,8 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="517e415794cb47d3a1d836dd170654ff" Name="Diagram1">
-        <EntityTypeShape EntityType="DiaryLogDBModel.DiaryLog" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="DiaryLogDBModel.User" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DiaryLogDBModel.DiaryLog" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

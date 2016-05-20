@@ -10,7 +10,6 @@
     @using (Html.BeginCollectionItem("DiaryLogs"))
     {
         <td style="width:0">
-            @*@{System.Web.Mvc.MvcHtmlString UserId = @Html.IdFor(m => Model.UserId);}*@
         </td>
         <td>
             @Html.TextBoxFor(m => m.DiaryLogItem, new { @class = "text-box", @style = "width:120px" })
@@ -20,7 +19,7 @@
             <span data-valmsg-for="DiaryLogItem"></span>*@
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogContents, new { @class = "text-box", @style = "width:180px" })
+            @Html.TextAreaFor(m=> m.DiaryLogContents, new { @class = "text-box", @style = "width:280px;height=106px" })
             @Html.ValidationMessageFor(x => x.DiaryLogContents, "", new { @class = "text-danger" })
         </td>
         <td>
@@ -28,15 +27,15 @@
             @Html.ValidationMessageFor(x => x.DiaryLogStatus, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogHours, new { @class = "text-box single-line", @style = "width:40px", @type = "number" })
+            @Html.TextBoxFor(m => m.DiaryLogHours, new { @class = "text-box single-line", @style = "width:70px", @type = "number" })
             @Html.ValidationMessageFor(x => x.DiaryLogHours, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogSituation, new { @class = "text-box single-line", @style = "width:180px" })
+            @Html.TextAreaFor(m => m.DiaryLogSituation, new { @class = "text-box", @style = "width:280px;height=106px" })
             @Html.ValidationMessageFor(x => x.DiaryLogSituation, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogSolve, new { @class = "text-box single-line", @style = "width:180px" })
+            @Html.TextAreaFor(m => m.DiaryLogSolve, new { @class = "text-box", @style = "width:280px;height=106px" })
             @Html.ValidationMessageFor(x => x.DiaryLogSolve, "", new { @class = "text-danger" })
         </td>
         <td>

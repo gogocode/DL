@@ -20,7 +20,7 @@ namespace DL.Models
         public string DiaryLogItem { get; set; }
         public string DiaryLogContents { get; set; }
         public bool DiaryLogStatus { get; set; }
-        public int DiaryLogHours { get; set; }
+        public decimal DiaryLogHours { get; set; }
         public string DiaryLogSituation { get; set; }
         public string DiaryLogSolve { get; set; }
         public string CreateId { get; set; }

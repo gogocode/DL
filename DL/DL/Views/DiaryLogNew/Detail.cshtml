@@ -2,7 +2,7 @@
 @model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title =  Model.UserName + "的工作日誌明細";
+    ViewBag.Title =  Model.UserName + "的日誌明細";
 }
 
 <script type="text/javascript">
@@ -65,19 +65,19 @@
                         <input class="text-box single-line" style="width:120px" value="@item.DiaryLogItem" disabled="disabled" />
                     </td>
                     <td>
-                        <input class="text-box single-line" style="width:180px" value="@item.DiaryLogContents" disabled="disabled" />
+                        @Html.TextArea("DiaryLogContents", item.DiaryLogContents, new {@disabled = "disabled", @class = "text-box", @style = "width:280px;height=106px" })
                     </td>
                     <td>
-                        <input class="text-box single-line" style="width:60px" value="@item.DiaryLogStatus" type="checkbox" disabled="disabled" />
+                        @Html.CheckBox("DiaryLogStatus", item.DiaryLogStatus, new { @disabled = "disabled", @class = "checkbox", @style = "width:60px" })
                     </td>
                     <td>
-                        <input class="text-box single-line" style="width:40px" value="@item.DiaryLogHours" type="number" disabled="disabled" />
+                        @Html.TextBox("DiaryLogHours", item.DiaryLogHours, new { @disabled = "disabled", @class = "text-box single-line", @style = "width:70px"})
                     </td>
                     <td>
-                        <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSituation" disabled="disabled" />
+                        @Html.TextArea("DiaryLogSituation", item.DiaryLogSituation, new { @disabled = "disabled", @class = "text-box", @style = "width:280px;height=106px" })
                     </td>
                     <td>
-                        <input class="text-box single-line" style="width:180px" value="@item.DiaryLogSolve" disabled="disabled" />
+                        @Html.TextArea("DiaryLogSolve", item.DiaryLogSolve, new { @disabled = "disabled", @class = "text-box", @style = "width:280px;height=106px" })
                     </td>
                     <td></td>
                 </tr>

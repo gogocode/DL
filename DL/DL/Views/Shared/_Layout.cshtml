@@ -18,13 +18,14 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                @Html.ActionLink("工作日誌系統", null, null, new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand">工作日誌系統</a>
             </div>
-            <div class="navbar-collapse collapse">
+
+            <div class="navbar-collapse">
                 <ul class="nav navbar-nav">
                     @if (Session["Account"] != null && Session["Account"].ToString() != "9999")
                     {
-                        <li>@Html.ActionLink("工作日誌", "Index", "DiaryLogNew", new {userId = Session["Id"].ToString() },null)</li>
+                        <li>@Html.ActionLink("工作日誌", "Index", "DiaryLogNew", new { userId = Session["Id"].ToString() }, null)</li>
                         <li>@Html.ActionLink("帳號修改", "Edit", "User", new { id = Session["Id"].ToString() }, null)</li>
                     }
                     else if (Session["Account"] != null && Session["Account"].ToString() == "9999")
@@ -35,6 +36,7 @@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
+
         </div>
     </div>
     <div class="container body-content">
@@ -47,3 +49,4 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+

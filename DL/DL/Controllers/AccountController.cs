@@ -42,7 +42,7 @@ namespace DL.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(LoginVM model)
         {
             if (!ModelState.IsValid)
             {

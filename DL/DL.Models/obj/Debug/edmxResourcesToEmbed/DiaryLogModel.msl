@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DiaryLogDBModelStoreContainer" CdmEntityContainer="DiaryLogDBEntities">
+    <EntitySetMapping Name="User">
+      <EntityTypeMapping TypeName="DiaryLogDBModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="UpdateId" ColumnName="UpdateId" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="CreateId" ColumnName="CreateId" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+          <ScalarProperty Name="UserAccount" ColumnName="UserAccount" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="DiaryLog">
       <EntityTypeMapping TypeName="DiaryLogDBModel.DiaryLog">
         <MappingFragment StoreEntitySet="DiaryLog">
@@ -17,22 +33,6 @@
           <ScalarProperty Name="DiaryLogDate" ColumnName="DiaryLogDate" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="DiaryLogId" ColumnName="DiaryLogId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="User">
-      <EntityTypeMapping TypeName="DiaryLogDBModel.User">
-        <MappingFragment StoreEntitySet="User">
-          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-          <ScalarProperty Name="UpdateId" ColumnName="UpdateId" />
-          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="CreateId" ColumnName="CreateId" />
-          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
-          <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-          <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
-          <ScalarProperty Name="UserAccount" ColumnName="UserAccount" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -21,7 +21,9 @@ namespace DL.Web.ViewModels.DiaryLogNew
         public bool DiaryLogStatus { get; set; }
         [Required]
         [Display(Name = "時數")]
-        public int DiaryLogHours { get; set; }
+        [RegularExpression(@"^\d+.?\d{0,1}$", ErrorMessage = "最多1位小數")]
+        [Range(0,99.9, ErrorMessage = "最大2位數字")]
+        public decimal DiaryLogHours { get; set; }
         [Display(Name = "狀況")]
         public string DiaryLogSituation { get; set; }
         [Display(Name = "是否解決")]
