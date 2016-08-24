@@ -137,6 +137,23 @@ namespace DL.Models.Service.DiaryLogs
             return result;
         }
 
+        public Dictionary<string,string> GetDiaryLogItemsByUserId(int userId)
+        {
+            Dictionary<string, string> diaryLogItemDics = new Dictionary<string, string>();
+
+            using (DiaryLogRepository _repo = new DiaryLogRepository())
+            {
+                var diaryLogItems = _repo.GetAll().Where(x=>x.UserId == userId).Select(x=>x.DiaryLogItem).Distinct();
+                
+                foreach(var diaryLogItem in diaryLogItems)
+                {
+                    diaryLogItemDics.Add(diaryLogItem, diaryLogItem);
+                }
+            }
+
+            return diaryLogItemDics;
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

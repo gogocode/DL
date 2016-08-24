@@ -20,11 +20,9 @@ namespace DL.Web.Controllers
 {
     public class DiaryLogNewController : BaseController
     {
-        #region Properties
-
         private int PageSize = Web.Properties.Settings.Default.PageSize;
-
-        #endregion
+        private UserService _userService = new UserService();
+        private DiaryLogService _diaryLogService = new DiaryLogService();
 
         #region Index
 
@@ -48,8 +46,6 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Index(DiaryLogNewIndexVM model)
         {
-            UserService _userService = new UserService();
-            DiaryLogService _diaryLogService = new DiaryLogService();
             List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(model.UserId,model.dateStart,model.dateEnd);
 
             string account = Session["Account"].ToString();
@@ -103,12 +99,12 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Edit(string strDate)
         {
-            UserService _userService = new UserService();
             DiaryLogService _diaryLogService = new DiaryLogService();
-
             string userAccount = Session["Account"].ToString();
             int userId = Convert.ToInt32(Session["Id"].ToString());
             string userName = _userService.GetUserNameById(userId);
+
+            ViewBag.DiaryLogItems = GetDiaryLogItemSelectItems(userId);
 
             List<DiaryLog> diaryLogs = _diaryLogService.GetDiaryLogsByDate(strDate,userId);
             Mapper.CreateMap<DiaryLog, DiaryLogDetailVM>();
@@ -134,6 +130,16 @@ namespace DL.Web.Controllers
                 return Json("false,");
             }
 
+            //移除不需要的驗證
+            foreach (var item in ModelState.Keys)
+            {
+                if (item.Contains("DiaryLogItems"))
+                {
+                    // ModelState.Remove(item);
+                    ModelState[item].Errors.Clear();
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 return Json("false,");
@@ -152,24 +158,6 @@ namespace DL.Web.Controllers
             return Json("true," + userId.ToString());
         }
 
-        //[HttpPost]
-        //[CheckSessionAcitionFilter]
-        //public ActionResult Edit(DiaryLogNewEditVM diaryLogNewEidts)
-        //{
-
-        //    DiaryLogService _diaryLogService = new DiaryLogService();
-        //    DateTime diaryLogDate = diaryLogNewEidts.DiaryLogDate;
-        //    string account = Session["Account"].ToString();
-        //    int userId = Convert.ToInt32( Session["Id"].ToString());
-
-        //    Mapper.CreateMap<DiaryLogDetailVM, DiaryLog>();
-        //    List<DiaryLog> diaryLogs = Mapper.Map<List<DiaryLog>>(diaryLogNewEidts.DiaryLogs);
-
-        //    _diaryLogService.ModidDiaryLogy(diaryLogs, diaryLogDate, account, userId);
-
-        //    return RedirectToAction("Index",new { userId = userId });
-        //}
-
         #endregion
 
         #region Create
@@ -178,16 +166,17 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Create()
         {
-            UserService _userService = new UserService();
             string userAccount = Session["Account"].ToString();
             int userId = Convert.ToInt32(Session["Id"].ToString());
             string userName = _userService.GetUserNameById(userId);
 
-            DiaryLogNewCreateVM diaryLogNewEidts = new DiaryLogNewCreateVM();
-            diaryLogNewEidts.UserAccount = userAccount;
-            diaryLogNewEidts.UserName = userName;
-            diaryLogNewEidts.DiaryLogDate = DateTime.Now.Date;
-            diaryLogNewEidts.UserId = userId;
+            DiaryLogNewCreateVM diaryLogNewEidts = new DiaryLogNewCreateVM()
+            {
+                UserAccount = userAccount,
+                UserName = userName,
+                DiaryLogDate = DateTime.Now.Date,
+                UserId = userId
+            };
 
             return View(diaryLogNewEidts);
         }
@@ -200,6 +189,16 @@ namespace DL.Web.Controllers
             if (model.DiaryLogs == null || model.DiaryLogDate == null)
             {
                 return Json("false,");
+            }
+
+            //移除不需要的驗證
+            foreach(var item in ModelState.Keys)
+            {
+                if( item.Contains("DiaryLogItems"))
+                { 
+                    // ModelState.Remove(item);
+                    ModelState[item].Errors.Clear();
+                }
             }
 
             if (!ModelState.IsValid)
@@ -227,41 +226,6 @@ namespace DL.Web.Controllers
             return Json("true," + userId.ToString());
         }
 
-        //[HttpPost]
-        //[CheckSessionAcitionFilter]
-        //public ActionResult Create(DiaryLogNewCreateVM model)
-        //{
-        //    if (model.DiaryLogs == null || model.DiaryLogDate == null)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //        int userId = Convert.ToInt32( Session["Id"].ToString());
-        //    string account = Session["Account"].ToString();
-        //    DiaryLogService _diaryLogService = new DiaryLogService();
-
-
-        //    foreach (var item in model.DiaryLogs)
-        //    {
-        //        DiaryLog diaryLog = new DiaryLog();
-        //        diaryLog.DiaryLogItem = item.DiaryLogItem;
-        //        diaryLog.DiaryLogContents = item.DiaryLogContents;
-        //        diaryLog.DiaryLogStatus = item.DiaryLogStatus;
-        //        diaryLog.DiaryLogHours = item.DiaryLogHours;
-        //        diaryLog.DiaryLogSituation = item.DiaryLogSituation;
-        //        diaryLog.DiaryLogSolve = item.DiaryLogSolve;
-
-        //        _diaryLogService.InsertDiaryLog(diaryLog, model.DiaryLogDate, account, userId);
-        //    }
-
-        //    return RedirectToAction("Index",new { userId = userId });
-        //}
-
         #endregion
 
         #region Delete
@@ -279,9 +243,6 @@ namespace DL.Web.Controllers
 
         public ActionResult Detail(string strDate,int userId)
         {
-            UserService _userService = new UserService();
-            DiaryLogService _diaryLogService = new DiaryLogService();
-
             string userAccount = _userService.GetUserAccountById(userId);
             string userName = _userService.GetUserNameById(userId);
 
@@ -302,14 +263,25 @@ namespace DL.Web.Controllers
 
         #endregion
 
-        public ActionResult GetDetailPartialView()
+        public ActionResult GetDetailPartialView(int userId)
         {
+            ViewBag.DiaryLogItems = GetDiaryLogItemSelectItems(userId);
+
             return PartialView("_DiaryLogDetailPartialView");
         }
 
-        
+        private List<SelectListItem> GetDiaryLogItemSelectItems(int userId)
+        {
+            Dictionary<string, string> diaryLogItemDics = _diaryLogService.GetDiaryLogItemsByUserId(userId);
+            List<SelectListItem> diaryLogItems = new List<SelectListItem>();
 
+            diaryLogItems.Add(new SelectListItem { Value = "", Text = "請選擇" });
+            foreach (var diaryLogItemDic in diaryLogItemDics)
+            {
+                diaryLogItems.Add(new SelectListItem { Value = diaryLogItemDic.Key, Text = diaryLogItemDic.Value });
+            }
 
-
+            return diaryLogItems;
+        }
     }
 }

@@ -4,27 +4,31 @@
 <tr> 
     @using (Html.BeginCollectionItem("DiaryLogs"))
     {
+        MvcHtmlString diaryLogItemsId = Html.IdFor(x => x.DiaryLogItems);
+        MvcHtmlString diaryLogItem = Html.IdFor(x => x.DiaryLogItem);
+
         <td style="width:0">
             @{int actdetailNo = Convert.ToInt32(Html.Raw(Model.DiaryLogId).ToString()); }
             @Html.HiddenFor(m => m.DiaryLogId)
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogItem, new { @class = "text-box single-line", @style = "width:120px" })
+            @Html.TextBoxFor(m => m.DiaryLogItem, new { @class = "form-control", @style = "width:120px" })
+            @Html.DropDownList("DiaryLogItems", null, new { @class = "form-control", onchange = "DLItemOnChange('" + diaryLogItem + "','" + diaryLogItemsId + "')" })
         </td>
         <td>
-            @Html.TextAreaFor(m => m.DiaryLogContents, new { @class = "text-box", @style = "width:280px;height=106px" })
+            @Html.TextAreaFor(m => m.DiaryLogContents, new { @class = "form-control", @rows="5"})
         </td>
         <td>
             @Html.CheckBoxFor(m => m.DiaryLogStatus, new { @class = "checkbox-inline", @style = "width:60px" })
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogHours, new { @class = "text-box single-line", @style = "width:70px", @type = "number" })
+            @Html.TextBoxFor(m => m.DiaryLogHours, new { @class = "form-control", @style = "width:70px", @type = "number" })
         </td>
         <td>
-            @Html.TextAreaFor(m => m.DiaryLogSituation, new { @class = "text-box", @style = "width:280px;height=106px" })
+            @Html.TextAreaFor(m => m.DiaryLogSituation, new { @class = "form-control", @rows = "5" })
         </td>
         <td>
-            @Html.TextAreaFor(m => m.DiaryLogSolve, new { @class = "text-box", @style = "width:280px;height=106px" })
+            @Html.TextAreaFor(m => m.DiaryLogSolve, new { @class = "form-control", @rows = "5" })
         </td>
         <td>
             <button class="btn btn-danger" onclick="deleteDetail('@actdetailNo')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>刪除</button>

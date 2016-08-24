@@ -22,3 +22,15 @@ D:\for GitHub\New DL\DL\DL.Models\bin\Debug\EntityFramework.xml
 D:\for GitHub\New DL\DL\DL.Models\bin\Debug\EntityFramework.SqlServer.xml
 D:\for GitHub\New DL\DL\DL.Models\bin\Debug\zh-Hans\EntityFramework.resources.dll
 D:\for GitHub\New DL\DL\DL.Models\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\DL.Models.dll.config
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\DL.Models.dll
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\DL.Models.pdb
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\EntityFramework.dll
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\EntityFramework.SqlServer.dll
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\EntityFramework.xml
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\EntityFramework.SqlServer.xml
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\zh-Hans\EntityFramework.resources.dll
+D:\40.Project\DL\DailyLOG\DL\DL.Models\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+D:\40.Project\DL\DailyLOG\DL\DL.Models\obj\Debug\DL.Models.csprojResolveAssemblyReference.cache
+D:\40.Project\DL\DailyLOG\DL\DL.Models\obj\Debug\DL.Models.dll
+D:\40.Project\DL\DailyLOG\DL\DL.Models\obj\Debug\DL.Models.pdb

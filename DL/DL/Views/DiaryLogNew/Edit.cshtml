@@ -2,10 +2,16 @@
 @model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title = "[日誌/編輯]";
+    ViewBag.Title = "[日誌 / 編輯]";
 }
 
 <script type="text/javascript">
+
+    function DLItemOnChange(DLItemId,DLItemsId){
+        //alert(DLItemId+":"+DLItemsId);
+        var DLItemsIdVal = $('#'+DLItemsId).val();
+        $('#'+DLItemId).val(DLItemsIdVal);
+    }
 
     // 新增明細的Partial View, 附加到 table
     $(function () {
@@ -13,8 +19,11 @@
             dateFormat: "yy/mm/dd"
         });
 
+        var userId = @Model.UserId;
+        var addNewUrl = '@Url.Action( "GetDetailPartialView", "DiaryLogNew")'+"?userId="+userId;
+
         $("#addDetailBtn").click(function () {
-            $.get('/DiaryLogNew/GetDetailPartialView', function (template) {
+            $.get(addNewUrl, function (template) {
                 $("#TextBoxesGroup").append(template);
                 event.preventDefault();
             });
@@ -48,7 +57,7 @@
         $("form").makeValidationInline();
 
 
-        
+
     });
 
     function deleteDetail(id) {
@@ -77,7 +86,7 @@
         }
     }
 
-    
+
 </script>
 
 <br />
@@ -107,7 +116,7 @@
             <div class="form-group">
                 <label class="control-label col-md-2">時間</label>
                 <div class="col-md-2">
-                    <label class="form-control">@String.Format("{0:d}", Model.DiaryLogDate) </label>
+                    <label class="form-control">@String.Format("{0:yyyy/MM/dd}", Model.DiaryLogDate) </label>
                 </div>
             </div>
         </div>
@@ -135,7 +144,7 @@
         </table>
 
         <div class="form-group">
-            <input type="submit" class="col-md-offset-11 btn btn-primary" value="送出" />
+            <input type="submit" class="btn btn-primary" value="送出" />
         </div>
 
 }

@@ -2,10 +2,16 @@
 @model DiaryLogNewCreateVM
 
 @{
-    ViewBag.Title = "[日誌/新增]";
+    ViewBag.Title = "[日誌 / 新增]";
 }
 
 <script type="text/javascript">
+
+    function DLItemOnChange(DLItemId,DLItemsId){
+        //alert(DLItemId+":"+DLItemsId);
+        var DLItemsIdVal = $('#'+DLItemsId).val();
+        $('#'+DLItemId).val(DLItemsIdVal);
+    }
 
     $(function () {
 
@@ -13,21 +19,24 @@
             dateFormat: "yy/mm/dd"
         });
 
-        $.get('/DiaryLogNew/GetDetailPartialView', function (template) {
+        var userId = @Model.UserId;
+        var addNewUrl = '@Url.Action( "GetDetailPartialView", "DiaryLogNew")'+"?userId="+userId;
+
+        $.get(addNewUrl, function (template) {
             
             $("#TextBoxesGroup").append(template);
-           // $.validator.unobtrusive.parse("form");
             event.preventDefault();
         });
 
         $("#addDetailBtn").click(function () {
-            $.get('/DiaryLogNew/GetDetailPartialView', function (template) {
+            $.get(addNewUrl, function (template) {
                 
                 $("#TextBoxesGroup").append(template);
                 event.preventDefault();
             });
         });
 
+        
 
         $("form").submit(function (e) {
             $.ajax({
@@ -53,6 +62,8 @@
         });
 
         $("form").makeValidationInline();
+
+        
 
     });
 </script>
@@ -80,11 +91,10 @@
                 <label class="form-control">@Model.UserName</label>
             </div>
         </div>
-
         <div class="form-group">
             <label class="control-label col-md-2">時間</label>
             <div class="col-md-2">
-                @Html.TextBoxFor(x => x.DiaryLogDate, "{0:yyyy/MM/dd}", new { @placeholder = "請輸入日期", @class = "form-control" })
+                @Html.TextBoxFor(x => x.DiaryLogDate, "{0:yyyy/MM/dd}", new { @placeholder = "請輸入日期", @class = "form-control", @style = "font-weight:bold;color:cornflowerblue" })
                 @Html.ValidationMessageFor(x => x.DiaryLogDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -109,7 +119,7 @@
             </tbody>
         </table>
         <div class="form-group">
-            <input type="submit" class="col-md-offset-11 btn btn-primary" value="送出" />
+            <input type="submit" class="btn btn-primary" value="送出" />
         </div>
         }
 

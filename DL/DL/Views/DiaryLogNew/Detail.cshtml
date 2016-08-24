@@ -2,7 +2,7 @@
 @model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title =  Model.UserName + "的日誌明細";
+    ViewBag.Title =  Model.UserName + " 的工作日誌";
 }
 
 <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">時間</label>
             <div class="col-md-2">
-                <label class="form-control">@String.Format("{0:d}", Model.DiaryLogDate) </label>
+                <label class="form-control">@String.Format("{0:yyyy/MM/dd}", Model.DiaryLogDate) </label>
             </div>
         </div>
     </div>
@@ -62,22 +62,22 @@
                 <tr>
                     <td style="width:0"></td>
                     <td>
-                        <input class="text-box single-line" style="width:120px" value="@item.DiaryLogItem" disabled="disabled" />
+                        <input class="form-control" style="width:120px" value="@item.DiaryLogItem" disabled="disabled" />
                     </td>
                     <td>
-                        @Html.TextArea("DiaryLogContents", item.DiaryLogContents, new {@disabled = "disabled", @class = "text-box", @style = "width:280px;height=106px" })
+                        @Html.TextArea("DiaryLogContents", item.DiaryLogContents, new {@disabled = "disabled", @class = "form-control", @rows=5 })
                     </td>
                     <td>
                         @Html.CheckBox("DiaryLogStatus", item.DiaryLogStatus, new { @disabled = "disabled", @class = "checkbox", @style = "width:60px" })
                     </td>
                     <td>
-                        @Html.TextBox("DiaryLogHours", item.DiaryLogHours, new { @disabled = "disabled", @class = "text-box single-line", @style = "width:70px"})
+                        @Html.TextBox("DiaryLogHours", item.DiaryLogHours, new { @disabled = "disabled", @class = "form-control", @style = "width:70px"})
                     </td>
                     <td>
-                        @Html.TextArea("DiaryLogSituation", item.DiaryLogSituation, new { @disabled = "disabled", @class = "text-box", @style = "width:280px;height=106px" })
+                        @Html.TextArea("DiaryLogSituation", item.DiaryLogSituation, new { @disabled = "disabled", @class = "form-control", @rows=5 })
                     </td>
                     <td>
-                        @Html.TextArea("DiaryLogSolve", item.DiaryLogSolve, new { @disabled = "disabled", @class = "text-box", @style = "width:280px;height=106px" })
+                        @Html.TextArea("DiaryLogSolve", item.DiaryLogSolve, new { @disabled = "disabled", @class = "form-control", @rows=5 })
                     </td>
                     <td></td>
                 </tr>

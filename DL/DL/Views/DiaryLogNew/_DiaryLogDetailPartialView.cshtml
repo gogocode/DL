@@ -9,17 +9,19 @@
 <tr>
     @using (Html.BeginCollectionItem("DiaryLogs"))
     {
+
+        MvcHtmlString diaryLogItemsId = Html.IdFor(x=>x.DiaryLogItems);
+        MvcHtmlString diaryLogItem = Html.IdFor(x => x.DiaryLogItem);
+
         <td style="width:0">
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogItem, new { @class = "text-box", @style = "width:120px" })
+            @Html.TextBoxFor(m => m.DiaryLogItem, new { @class = "form-control", @style = "width:120px" })
             @Html.ValidationMessageFor(x => x.DiaryLogItem)
-            @*<input type="text" id="DiaryLogItem" name="DiaryLogItem" data-val="true" class="text-box" style = "width:120px"
-                   data-val-required="項目不可空白" />
-            <span data-valmsg-for="DiaryLogItem"></span>*@
+            @Html.DropDownList("DiaryLogItems", null,new { @class = "form-control", onchange = "DLItemOnChange('"+ diaryLogItem + "','"+diaryLogItemsId+"')" })
         </td>
         <td>
-            @Html.TextAreaFor(m=> m.DiaryLogContents, new { @class = "text-box", @style = "width:280px;height=106px" })
+            @Html.TextAreaFor(m=> m.DiaryLogContents, new { @class = "form-control", @rows="5" })
             @Html.ValidationMessageFor(x => x.DiaryLogContents, "", new { @class = "text-danger" })
         </td>
         <td>
@@ -27,15 +29,15 @@
             @Html.ValidationMessageFor(x => x.DiaryLogStatus, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.TextBoxFor(m => m.DiaryLogHours, new { @class = "text-box single-line", @style = "width:70px", @type = "number" })
+            @Html.TextBoxFor(m => m.DiaryLogHours, new { @class = "form-control", @style = "width:70px", @type = "number" })
             @Html.ValidationMessageFor(x => x.DiaryLogHours, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.TextAreaFor(m => m.DiaryLogSituation, new { @class = "text-box", @style = "width:280px;height=106px" })
+            @Html.TextAreaFor(m => m.DiaryLogSituation, new { @class = "form-control", @rows="5" })
             @Html.ValidationMessageFor(x => x.DiaryLogSituation, "", new { @class = "text-danger" })
         </td>
         <td>
-            @Html.TextAreaFor(m => m.DiaryLogSolve, new { @class = "text-box", @style = "width:280px;height=106px" })
+            @Html.TextAreaFor(m => m.DiaryLogSolve, new { @class = "form-control", @rows="5" })
             @Html.ValidationMessageFor(x => x.DiaryLogSolve, "", new { @class = "text-danger" })
         </td>
         <td>
