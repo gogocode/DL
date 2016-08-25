@@ -30,10 +30,19 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Index(int userId)
         {
+            //檢查如果userId不等於Session["Id"]，不能進入頁面看別人的。
+            //除了管理者除外
+            if(userId.ToString() != Session["Id"].ToString())
+            {
+                if (!Session["Account"].ToString().Equals("9999"))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+
             DiaryLogService _diaryLogService = new DiaryLogService();
             List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(userId);
-            string account = Session["Account"].ToString();
-            ViewBag.Account = account;
+            ViewBag.Account = Session["Account"].ToString(); 
 
             DiaryLogNewIndexVM diaryLogNewIndexVM = new DiaryLogNewIndexVM();
             diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
@@ -46,10 +55,18 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult Index(DiaryLogNewIndexVM model)
         {
-            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(model.UserId,model.dateStart,model.dateEnd);
+            //檢查如果userId不等於Session["Id"]，不能進入頁面看別人的。
+            //除了管理者除外
+            if (model.UserId.ToString() != Session["Id"].ToString())
+            {
+                if (!Session["Account"].ToString().Equals("9999"))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+            }
 
-            string account = Session["Account"].ToString();
-            ViewBag.Account = account;
+            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(model.UserId,model.dateStart,model.dateEnd);
+            ViewBag.Account = Session["Account"].ToString();
 
             DiaryLogNewIndexVM diaryLogNewIndexVM = model;
             diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
@@ -61,6 +78,12 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult MasterIndex()
         {
+            //只有管理者才能進入頁面
+            if (!Session["Account"].ToString().Equals("9999"))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             UserAndDiaryLogService _service = new UserAndDiaryLogService();
             List<DiaryLogAndUserSM> diaryLogAndUserSMs = _service.FindAllUserJoinDiaryLog();
 
@@ -78,6 +101,12 @@ namespace DL.Web.Controllers
         [CheckSessionAcitionFilter]
         public ActionResult MasterIndex(DiaryLogNewMasterIndexVM model)
         {
+            //只有管理者才能進入頁面
+            if (!Session["Account"].ToString().Equals("9999"))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             UserAndDiaryLogService _service = new UserAndDiaryLogService();
             List<DiaryLogAndUserSM> diaryLogAndUserSMs = _service.FindUserJoinDiaryLogByAccountId(model.UserAccount,model.UserName);
 
@@ -243,6 +272,16 @@ namespace DL.Web.Controllers
 
         public ActionResult Detail(string strDate,int userId)
         {
+            //檢查如果userId不等於Session["Id"]，不能進入頁面看別人的。
+            //除了管理者除外
+            if (userId.ToString() != Session["Id"].ToString())
+            {
+                if (!Session["Account"].ToString().Equals("9999"))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+
             string userAccount = _userService.GetUserAccountById(userId);
             string userName = _userService.GetUserNameById(userId);
 

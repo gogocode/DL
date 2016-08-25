@@ -12,7 +12,7 @@ namespace DL.Web.ActionFilter
         {
             if (filterContext.HttpContext.Session["Id"] == null || filterContext.HttpContext.Session["Account"] == null)
             {
-                filterContext.Result = new RedirectResult("http://localhost:4684/Account/Login");
+                filterContext.Result = new RedirectResult("~/Account/Login");
                 return;
             }
         }
