@@ -4,11 +4,13 @@ using DL.Models.Repository;
 using DL.Models.Service;
 using DL.Models.Service.DiaryLogs;
 using DL.Models.Service.ServiceModels;
+using DL.Models.Service.ServiceModels.DiaryLogNew;
 using DL.Models.Service.Users;
 using DL.Web.ActionFilter;
 using DL.Web.Controllers.Base;
 using DL.Web.ViewModels.DiaryLogNew;
 using MvcPaging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -40,24 +42,24 @@ namespace DL.Web.Controllers
                 }
             }
 
-            DiaryLogService _diaryLogService = new DiaryLogService();
-            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(userId);
+            List<DiaryLogNewList> diaryLogNewList = _diaryLogService.FindDiarysGroupByUserId(userId);
+
             ViewBag.Account = Session["Account"].ToString(); 
 
-            DiaryLogNewIndexVM diaryLogNewIndexVM = new DiaryLogNewIndexVM();
-            diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
-            diaryLogNewIndexVM.UserId = userId;
+            DiaryLogNewIndexVM vm = new DiaryLogNewIndexVM();
+            vm.DiaryLogNewList = diaryLogNewList.OrderByDescending(x => x.Date).ToPagedList(vm.Page > 0 ? vm.Page - 1 : 0, PageSize);
+            vm.UserId = userId;
 
-            return View(diaryLogNewIndexVM);
+            return View(vm);
         }
 
         [HttpPost]
         [CheckSessionAcitionFilter]
-        public ActionResult Index(DiaryLogNewIndexVM model)
+        public ActionResult Index(DiaryLogNewIndexVM vm)
         {
             //檢查如果userId不等於Session["Id"]，不能進入頁面看別人的。
             //除了管理者除外
-            if (model.UserId.ToString() != Session["Id"].ToString())
+            if (vm.UserId.ToString() != Session["Id"].ToString())
             {
                 if (!Session["Account"].ToString().Equals("9999"))
                 {
@@ -65,13 +67,12 @@ namespace DL.Web.Controllers
                 }
             }
 
-            List<DateTime> diaryLogDates = _diaryLogService.GetDiarysGroupByUserId(model.UserId,model.dateStart,model.dateEnd);
+            List<DiaryLogNewList> diaryLogDates = _diaryLogService.FindDiarysGroupByUserId(vm.UserId,vm.dateStart,vm.dateEnd);
             ViewBag.Account = Session["Account"].ToString();
 
-            DiaryLogNewIndexVM diaryLogNewIndexVM = model;
-            diaryLogNewIndexVM.DiaryLogDate = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(diaryLogNewIndexVM.Page > 0 ? diaryLogNewIndexVM.Page - 1 : 0, PageSize);
+            vm.DiaryLogNewList = diaryLogDates.OrderByDescending(x => x.Date).ToPagedList(vm.Page > 0 ? vm.Page - 1 : 0, PageSize);
 
-            return View("Index",diaryLogNewIndexVM);
+            return View("Index",vm);
         }
 
         [HttpGet]
@@ -309,6 +310,24 @@ namespace DL.Web.Controllers
             return PartialView("_DiaryLogDetailPartialView");
         }
 
+        public ActionResult JobWeight(int userId)
+        {
+
+            ViewBag.SearchYear = Utilities.Common.GetYears();
+
+            return View();
+        }
+
+        public ActionResult GetJobWeightData(string year,string month,int userId)
+        {
+            JobWeightChart chart = _diaryLogService.FindJobWeightData( year,  month,  userId);
+            string Series = JsonConvert.SerializeObject(chart.Series);
+            string Legend = JsonConvert.SerializeObject(chart.Legend);
+
+            return Json(new {isSuccess = chart.Series.Count() > 0 , series = Series , legend = Legend }, JsonRequestBehavior.AllowGet);
+        }
+
+        #region 私有方法
         private List<SelectListItem> GetDiaryLogItemSelectItems(int userId)
         {
             Dictionary<string, string> diaryLogItemDics = _diaryLogService.GetDiaryLogItemsByUserId(userId);
@@ -322,5 +341,6 @@ namespace DL.Web.Controllers
 
             return diaryLogItems;
         }
+        #endregion
     }
 }

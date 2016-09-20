@@ -77,6 +77,8 @@
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Service\DiaryLogs\DiaryLogService.cs" />
     <Compile Include="Service\ServiceModels\DiaryLogAndUserSM.cs" />
+    <Compile Include="Service\ServiceModels\DiaryLogNew\DiaryLogNewList.cs" />
+    <Compile Include="Service\ServiceModels\DiaryLogNew\JobWeightChart.cs" />
     <Compile Include="Service\ServiceModels\User\UserEditSV.cs" />
     <Compile Include="Service\UserAndDiaryLogService.cs" />
     <Compile Include="Service\Users\UserInsertSM.cs" />

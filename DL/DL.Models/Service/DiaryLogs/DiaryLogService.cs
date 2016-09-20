@@ -1,4 +1,6 @@
 ﻿using DL.Models.Repository.Class.Base;
+using DL.Models.Service.ServiceModels;
+using DL.Models.Service.ServiceModels.DiaryLogNew;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,14 @@ namespace DL.Models.Service.DiaryLogs
             DateTime date = Convert.ToDateTime(strDate);
 
             return GetDiaryLogsByUserId(userId).Where(x => x.DiaryLogDate == date).ToList();
+        }
+
+        public List<DiaryLog> GetDiaryLogsByMonth(string year,string month,int userId)
+        {
+            List<DiaryLog> diaryLogs = GetDiaryLogsByUserId(userId);
+            diaryLogs = diaryLogs.Where(x => x.DiaryLogDate.Year == int.Parse(year) && x.DiaryLogDate.Month == int.Parse(month)).ToList();
+
+            return diaryLogs;
         }
 
         public List<DateTime> GetDiarysGroupByUserId( int userId,DateTime? dateStart = null,DateTime? dateEnd = null)
@@ -53,6 +63,38 @@ namespace DL.Models.Service.DiaryLogs
             }
 
             return diaryLogDates;
+        }
+
+        public List<DiaryLogNewList> FindDiarysGroupByUserId(int userId, DateTime? dateStart = null, DateTime? dateEnd = null)
+        {
+            List<DiaryLog> diaryLogs = GetDiaryLogsByUserId(userId);
+
+            if (dateStart != null)
+            {
+                diaryLogs = diaryLogs.Where(x => x.DiaryLogDate >= dateStart).ToList();
+            }
+
+            if (dateEnd != null)
+            {
+                diaryLogs = diaryLogs.Where(x => x.DiaryLogDate <= dateEnd).ToList();
+            }
+
+            var gro = from d in diaryLogs
+                      group d by d.DiaryLogDate;
+
+            List<DiaryLogNewList> diaryLogList = new List<DiaryLogNewList>();
+
+            foreach (var item in gro)
+            {
+                DiaryLogNewList diaryLog = new DiaryLogNewList();
+                diaryLog.Date = item.Key;
+                diaryLog.Week = item.Key.ToString("dddd");
+                diaryLog.TotalTime = item.Sum(x => x.DiaryLogHours);
+
+                diaryLogList.Add(diaryLog);
+            }
+
+            return diaryLogList;
         }
 
         public void InsertDiaryLog(DiaryLog diaryLogs, DateTime diaryLogDate, string account, int userId)
@@ -99,7 +141,6 @@ namespace DL.Models.Service.DiaryLogs
 
         public void ModidDiaryLogy(List<DiaryLog> diaryLogs, DateTime diaryLogDate, string account, int userId)
         {
-
             using (DiaryLogRepository _repo = new DiaryLogRepository())
             {
 
@@ -117,7 +158,6 @@ namespace DL.Models.Service.DiaryLogs
                     }
                 }
             }
-
         }
 
         public bool DeleteDiaryLog(int diaryLogId)
@@ -152,6 +192,27 @@ namespace DL.Models.Service.DiaryLogs
             }
 
             return diaryLogItemDics;
+        }
+
+        public JobWeightChart FindJobWeightData(string year,string month,int userId)
+        {
+            JobWeightChart chart = new JobWeightChart();
+
+            List<DiaryLog> diaryLogs = GetDiaryLogsByMonth( year,  month,  userId);
+            var diaryLogGroup = from q in diaryLogs
+                                group q by q.DiaryLogItem into g
+                                select new {
+                                    Item = g.Key,
+                                    ItemSum = g.Select(x => x.DiaryLogHours).Sum()
+                                };
+
+            chart.Legend = diaryLogGroup.Select(x=>x.Item).ToList();
+            chart.Series = diaryLogGroup.Select(x=>new Series {
+                value = x.ItemSum,
+                name = x.Item
+            }).ToList();
+
+            return chart;
         }
 
         public void Dispose()

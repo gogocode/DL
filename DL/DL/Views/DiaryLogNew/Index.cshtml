@@ -42,11 +42,12 @@
     if (ViewBag.Account != "9999")
     {
         <a href="/DiaryLogNew/Create" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增</a>
-        <br />
-        <br />
     }
 
-    if (Model.DiaryLogDate != null && Model.DiaryLogDate.Count() > 0)
+    <button id="JobWeightBtn" type="button" class="btn btn-warning"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>工作內容比重</button>
+    <br />
+    <br />
+    if (Model.DiaryLogNewList != null && Model.DiaryLogNewList.Count() > 0)
     {
         <table class="table table-striped">
             <thead>
@@ -58,26 +59,38 @@
                         @Html.DisplayName("時間")
                     </th>
                     <th>
+                        @Html.DisplayName("日期")
+                    </th>
+                    <th>
+                        @Html.DisplayName("工作時數")
+                    </th>
+                    <th>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 @{int i = 0;}
-                @foreach (var item in Model.DiaryLogDate)
+                @foreach (var item in Model.DiaryLogNewList)
                 {
                     <tr>
                         <td>
-                            @(++i + (Model.DiaryLogDate.PageSize * (Model.DiaryLogDate.PageNumber - 1)))
+                            @(++i + (Model.DiaryLogNewList.PageSize * (Model.DiaryLogNewList.PageNumber - 1)))
                         </td>
                         <td>
-                            @String.Format("{0:d}", item)
+                            @String.Format("{0:yyyy/MM/dd}", item.Date)
+                        </td>
+                        <td>
+                            @item.Week
+                        </td>
+                        <td>
+                            @item.TotalTime
                         </td>
                         <td>
                             @if (ViewBag.Account != "9999")
                             {
-                                <a class="btn btn-primary" href="/DiaryLogNew/Edit/?strDate=@string.Format(" {0:yyyy-MM-dd}", item)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
+                                <a class="btn btn-primary" href="/DiaryLogNew/Edit/?strDate=@string.Format(" {0:yyyy-MM-dd}", item.Date)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>編輯</a>
                             }
-                            <a class="btn btn-info" href="/DiaryLogNew/Detail/?strDate=@string.Format(" {0:yyyy-MM-dd}", item)&userId=@Model.UserId"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>明細</a>
+                            <a class="btn btn-info" href="/DiaryLogNew/Detail/?strDate=@string.Format(" {0:yyyy-MM-dd}", item.Date)&userId=@Model.UserId"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>明細</a>
                         </td>
                     </tr>
                 }
@@ -85,17 +98,20 @@
         </table>
 
         <div class="pager">
-            @Html.Pager(Model.DiaryLogDate.PageSize, Model.DiaryLogDate.PageNumber, Model.DiaryLogDate.TotalItemCount)
+            @Html.Pager(Model.DiaryLogNewList.PageSize, Model.DiaryLogNewList.PageNumber, Model.DiaryLogNewList.TotalItemCount)
         </div>
                         }
                     }
 
 @if(Session["Account"].ToString().Equals("9999"))
 { 
-<div>
-    @Html.ActionLink("返回列表", "MasterIndex",null, new { @class = "btn btn-default" })
-</div>
+    <div>
+        @Html.ActionLink("返回列表", "MasterIndex",null, new { @class = "btn btn-default" })
+    </div>
 }
+
+<div id="modalhere">
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -129,9 +145,28 @@
             return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
         }
 
+        $("#JobWeightBtn").on("click", function () {
+            var url = '@Url.Action("JobWeight", "DiaryLogNew")';
+
+            location.href = url + location.search;
+
+        });
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
     </script>
 }
-
-
 
 

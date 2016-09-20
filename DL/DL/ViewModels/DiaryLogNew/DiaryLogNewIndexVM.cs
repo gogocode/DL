@@ -1,4 +1,5 @@
-﻿using MvcPaging;
+﻿using DL.Models.Service.ServiceModels;
+using MvcPaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace DL.Web.ViewModels.DiaryLogNew
 
         public int UserId { get; set; }
 
-        public IPagedList<DateTime> DiaryLogDate { get; set; }  // 符合條件資料
+        //public IPagedList<DateTime> DiaryLogDate { get; set; }  // 符合條件資料
+        public IPagedList<DiaryLogNewList> DiaryLogNewList { get; set; } 
 
         public int Page { get; set; } //頁碼
     }

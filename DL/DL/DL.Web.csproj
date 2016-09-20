@@ -223,6 +223,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Attribute\EmailAttribute.cs" />
+    <Compile Include="Utilities\Common.cs" />
     <Compile Include="Utilities\MD5Encoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -483,9 +484,11 @@
     <Content Include="Views\DiaryLogNew\Detail.cshtml" />
     <Content Include="Views\User\EditSuccess.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\DiaryLogNew\JobWeight.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\echarts\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Validate\" />
   </ItemGroup>
