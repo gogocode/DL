@@ -2,97 +2,16 @@
 @model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title = "[日誌 / 編輯]";
+    ViewBag.Title = "工作日誌編輯";
 }
 
-<script type="text/javascript">
-
-    function DLItemOnChange(DLItemId,DLItemsId){
-        //alert(DLItemId+":"+DLItemsId);
-        var DLItemsIdVal = $('#'+DLItemsId).val();
-        $('#'+DLItemId).val(DLItemsIdVal);
-    }
-
-    // 新增明細的Partial View, 附加到 table
-    $(function () {
-        $('#diaryLogDate').datepicker({
-            dateFormat: "yy/mm/dd"
-        });
-
-        var userId = @Model.UserId;
-        var addNewUrl = '@Url.Action( "GetDetailPartialView", "DiaryLogNew")'+"?userId="+userId;
-
-        $("#addDetailBtn").click(function () {
-            $.get(addNewUrl, function (template) {
-                $("#TextBoxesGroup").append(template);
-                event.preventDefault();
-            });
-        });
-
-        $("form").submit(function (e) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("AjaxEdit", "DiaryLogNew")',
-                data: $("form").serialize(),
-                success: function (result) {
-                    var date = result.split(",");
-                    if(date[0] === "true")
-                    {
-                        var url = '@Url.Action("Index")';
-                        url = url + "?userId="+@Model.UserId;
-                        window.location.href=url;
-                    }
-                    else
-                    {
-                    }
-                },
-                error: function (xhr, ajaxOptions, Error) {
-                    alert(Error);
-                }
-            });
-
-            e.preventDefault();
-        });
-
-        $("form").makeValidationInline();
-
-
-
-    });
-
-    function deleteDetail(id) {
-        if (confirm('確定刪除？')) {
-            $.ajax({
-                type: 'post',
-                url: '@Url.Action("DeleteADetail", "DiaryLogNew")',
-                data: JSON.stringify({ "actdetailNo": id }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (msg) {
-                    if (msg) {
-                        window.location.reload();
-                    } else {
-                        alert("刪除失敗");
-                    }
-                },
-                error: function (xhr, ajaxOptions, Error) {
-                    alert(Error);
-                }
-            });
-            event.preventDefault();
-        }
-        else {
-            event.preventDefault();
-        }
-    }
-
-
-</script>
-
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
 <br />
-<label class="title">@ViewBag.Title</label>
-<hr />
-
 @using (Html.BeginForm("AjaxEdit", "DiaryLogNew"))
 {
         @Html.AntiForgeryToken()
@@ -151,3 +70,86 @@
 <div>
     @Html.ActionLink("返回列表", "Index", new { userId = Model.UserId }, new { @class = "btn btn-default" })
 </div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+    function DLItemOnChange(DLItemId,DLItemsId){
+        //alert(DLItemId+":"+DLItemsId);
+        var DLItemsIdVal = $('#'+DLItemsId).val();
+        $('#'+DLItemId).val(DLItemsIdVal);
+    }
+
+    // 新增明細的Partial View, 附加到 table
+    $(function () {
+        $('#diaryLogDate').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+
+        var userId = @Model.UserId;
+        var addNewUrl = '@Url.Action( "GetDetailPartialView", "DiaryLogNew")'+"?userId="+userId;
+
+        $("#addDetailBtn").click(function () {
+            $.get(addNewUrl, function (template) {
+                $("#TextBoxesGroup").append(template);
+                event.preventDefault();
+            });
+        });
+
+        $("form").submit(function (e) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AjaxEdit", "DiaryLogNew")',
+                data: $("form").serialize(),
+                success: function (result) {
+                    var date = result.split(",");
+                    if(date[0] === "true")
+                    {
+                        var url = '@Url.Action("Index")';
+                        url = url + "?userId="+@Model.UserId;
+                        window.location.href=url;
+                    }
+                    else
+                    {
+                    }
+                },
+                error: function (xhr, ajaxOptions, Error) {
+                    alert(Error);
+                }
+            });
+
+            e.preventDefault();
+        });
+
+    });
+
+    function deleteDetail(id) {
+        if (confirm('確定刪除？')) {
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("DeleteADetail", "DiaryLogNew")',
+                data: JSON.stringify({ "actdetailNo": id }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg) {
+                        window.location.reload();
+                    } else {
+                        alert("刪除失敗");
+                    }
+                },
+                error: function (xhr, ajaxOptions, Error) {
+                    alert(Error);
+                }
+            });
+            event.preventDefault();
+        }
+        else {
+            event.preventDefault();
+        }
+    }
+
+
+</script>
+    }

@@ -13,5 +13,7 @@ namespace DL.Models.Service.Users
         public int UserId { get; set; }
 
         public string UserAccount { get; set; }
+
+        public string UserName { get; set; }
     }
 }

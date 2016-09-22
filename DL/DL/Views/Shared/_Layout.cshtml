@@ -1,52 +1,42 @@
 ﻿<!DOCTYPE html>
-<html lang="zh-Hant-TW">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - 工作日誌系統</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>工作日誌系統</title>
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jqueryinline")
-    @Styles.Render("~/Content/inlinecss")
 </head>
+
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand">工作日誌系統</a>
+                <a class="navbar-brand" href="#"><span style="font-weight:bold">工作日誌</span>系統</a>
+                @Html.Partial("_UserMenu")
             </div>
-
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav">
-                    @if (Session["Account"] != null && Session["Account"].ToString() != "9999")
-                    {
-                        <li>@Html.ActionLink("工作日誌", "Index", "DiaryLogNew", new { userId = Session["Id"].ToString() }, null)</li>
-                        <li>@Html.ActionLink("帳號修改", "Edit", "User", new { id = Session["Id"].ToString() }, null)</li>
-                    }
-                    else if (Session["Account"] != null && Session["Account"].ToString() == "9999")
-                    {
-                        <li>@Html.ActionLink("工作日誌", "MasterIndex", "DiaryLogNew")</li>
-                        <li>@Html.ActionLink("帳號管理", "Index", "User")</li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-
         </div>
-    </div>
-    <div class="container body-content">
+    </nav>
+
+    @Html.Partial("_Menu")
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        
         @RenderBody()
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - 工作日誌系統</p>
         </footer>
-    </div>
+    </div>	<!--/.main-->
     @RenderSection("scripts", required: false)
 </body>
-</html>
 
+</html>

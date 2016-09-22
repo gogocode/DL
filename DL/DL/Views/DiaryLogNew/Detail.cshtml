@@ -2,22 +2,16 @@
 @model DiaryLogNewEditVM
 
 @{
-    ViewBag.Title = "[日誌 / 明細]";
+    ViewBag.Title = "工作日誌明細";
 }
 
-<script type="text/javascript">
-    $(function () {
-        $('#diaryLogDate').datepicker({
-            dateFormat: "yy/mm/dd"
-        });
-    })
-
-</script>
-
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
 <br />
-<label class="title">@ViewBag.Title</label>
-<hr />
-
 @using (Html.BeginForm("Detail", "DiaryLogNew", FormMethod.Post, new { @id = "detailForm" }))
 {
     @Html.AntiForgeryToken()
@@ -91,3 +85,13 @@
     @Html.ActionLink("返回列表", "Index",new { userId=Model.UserId}, new { @class = "btn btn-default" })
 </div>
 
+@section scripts{
+    <script type="text/javascript">
+    $(function () {
+        $('#diaryLogDate').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+    })
+
+</script>
+    }

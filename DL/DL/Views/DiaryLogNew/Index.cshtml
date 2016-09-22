@@ -2,24 +2,17 @@
 @model DiaryLogNewIndexVM
 
 @{
-    ViewBag.Title = "[日誌 / 查詢]";
+    ViewBag.Title = "工作日誌查詢";
     ViewBag.SubTitle = "輸入查詢條件";
 }
 
-<script type="text/javascript">
-    $(function () {
-        $('#dateStart').datepicker({
-            dateFormat: "yy/mm/dd"
-        });
-        $('#dateEnd').datepicker({
-            dateFormat: "yy/mm/dd"
-        });
-    })
-</script>
-
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
 <br />
-<label class="title">@ViewBag.Title</label>
-<hr />
 
 <h4><strong>@ViewBag.SubTitle</strong></h4>
 
@@ -114,7 +107,17 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $(function () {
+        $('#dateStart').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+        $('#dateEnd').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+    })
+</script>
     <script>
         $(function () {
             // Fields

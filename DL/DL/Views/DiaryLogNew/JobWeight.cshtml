@@ -1,12 +1,15 @@
 ﻿
 @{
-    ViewBag.Title = "[日誌 / 工作內容比重]";
+    ViewBag.Title = "工作內容比重";
 }
 
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
 <br />
-<label class="title">@ViewBag.Title</label>
-<hr />
-
 <div class="row">
     <div class="col-lg-12">
             @Html.DropDownList("SearchYear", ViewBag.SearchYear as List<SelectListItem>, new { @class = "form-control" })
@@ -55,9 +58,10 @@
 </div>
 
 <div class="row">
-    <br />
-    <button type="button" class="btn btn-default" onclick="history.go(-1)">返回上一頁</button>
-</div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <br />
+        <button type="button" class="btn btn-default" onclick="history.go(-1)">返回上一頁</button>
+    </div></div>
 
     @section Scripts {
         <!-- ECharts -->

@@ -76,6 +76,7 @@ namespace DL.Web.Controllers
             {
                 Session["Id"] = validateLoginSV.UserId;
                 Session["Account"] = validateLoginSV.UserAccount;
+                Session["Name"] = validateLoginSV.UserName;
 
                 if (Session["Account"].ToString().Equals("9999"))
                 {

@@ -135,6 +135,7 @@ namespace DL.Models.Service.Users
                 validateLoginSV.LoginStatus = 2;
                 validateLoginSV.UserId = user.UserId;
                 validateLoginSV.UserAccount = user.UserAccount;
+                validateLoginSV.UserName = user.UserName;
                 return validateLoginSV;
             }
 

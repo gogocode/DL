@@ -27,7 +27,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserAccount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @placeholder = "必填欄位", @maxlength = "4", @class = "form-control" } })
+                @Html.EditorFor(model => model.UserAccount, new { htmlAttributes = new { @placeholder = "請輸入編號", @maxlength = "4", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UserAccount, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserPassword, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @placeholder = "必填欄位", @class = "form-control" } })
+                @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @placeholder = "請輸入密碼", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @placeholder = "必填欄位", @class = "form-control" } })
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @placeholder = "請再次輸入密碼", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @placeholder = "必填欄位", @class = "form-control" } })
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @placeholder = "請輸入姓名", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -59,7 +59,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserEmail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @placeholder = "必填欄位", @class = "form-control" } })
+                @Html.EditorFor(model => model.UserEmail, new { htmlAttributes = new { @placeholder = "請輸入Email", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
             </div>
         </div>

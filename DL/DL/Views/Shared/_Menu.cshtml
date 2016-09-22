@@ -1,0 +1,45 @@
+﻿@if (Session["Account"] != null){ 
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <form role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+        </div>
+    </form>
+    <ul class="nav menu">
+
+        @if (Session["Account"] != null && Session["Account"].ToString() != "9999")
+        {
+            <li class="parent ">
+                <a data-toggle="collapse" href="#sub-item-1" >
+                    <span class="glyphicon glyphicon-list-alt"></span>工作日誌管理
+                </a>
+                <ul class="children collapse" id="sub-item-1">
+                    <li>@Html.ActionLink("工作日誌查詢", "Index", "DiaryLogNew", new { userId = Session["Id"].ToString() }, null)</li>
+                </ul>
+            </li>
+        }
+        else if (Session["Account"] != null && Session["Account"].ToString() == "9999")
+        {
+            <li class="parent ">
+                <a data-toggle="collapse" href="#sub-item-1">
+                    <span class="glyphicon glyphicon-list-alt"></span> 工作日誌管理
+                </a>
+                <ul class="children collapse" id="sub-item-1">
+                    <li>@Html.ActionLink("工作日誌查詢", "MasterIndex", "DiaryLogNew", new { userId = Session["Id"].ToString() }, null)</li>
+                </ul>
+            </li>
+            <li class="parent ">
+                <a data-toggle="collapse" href="#sub-item-2">
+                    <span class="glyphicon glyphicon-lamp"></span> 帳號管理
+                </a>
+                <ul class="children collapse" id="sub-item-2">
+                    <li>@Html.ActionLink("帳號查詢", "Index", "User")</li>
+                </ul>
+            </li>
+        }
+
+        <li role="presentation" class="divider"></li>
+        <li><a href="/Account/Login"><span class="glyphicon glyphicon-user"></span>登入頁面</a></li>
+    </ul>
+</div><!--/.sidebar-->
+}

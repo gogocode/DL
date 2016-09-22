@@ -2,76 +2,16 @@
 @model DiaryLogNewCreateVM
 
 @{
-    ViewBag.Title = "[日誌 / 新增]";
+    ViewBag.Title = "工作日誌新增";
 }
 
-<script type="text/javascript">
-
-    function DLItemOnChange(DLItemId,DLItemsId){
-        //alert(DLItemId+":"+DLItemsId);
-        var DLItemsIdVal = $('#'+DLItemsId).val();
-        $('#'+DLItemId).val(DLItemsIdVal);
-    }
-
-    $(function () {
-
-        $('#DiaryLogDate').datepicker({
-            dateFormat: "yy/mm/dd"
-        });
-
-        var userId = @Model.UserId;
-        var addNewUrl = '@Url.Action( "GetDetailPartialView", "DiaryLogNew")'+"?userId="+userId;
-
-        $.get(addNewUrl, function (template) {
-            
-            $("#TextBoxesGroup").append(template);
-            event.preventDefault();
-        });
-
-        $("#addDetailBtn").click(function () {
-            $.get(addNewUrl, function (template) {
-                
-                $("#TextBoxesGroup").append(template);
-                event.preventDefault();
-            });
-        });
-
-        
-
-        $("form").submit(function (e) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("AjaxCreate")',
-                data: $("form").serialize(),
-                success: function (result) {
-                    //alert(result);
-                    var date = result.split(",");
-                    if(date[0] === "true")
-                    {
-                        var url = '@Url.Action("Index")';
-                        url = url + "?userId="+@Model.UserId;
-                        window.location.href=url;
-                    }
-                    else
-                    {
-                    }
-                }
-            });
-
-            e.preventDefault();
-        });
-
-        $("form").makeValidationInline();
-
-        
-
-    });
-</script>
-
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
 <br />
-<label class="title">@ViewBag.Title</label>
-<hr />
-
 @using (Html.BeginForm("AjaxCreate", "DiaryLogNew"))
 {
     @Html.AntiForgeryToken()
@@ -127,3 +67,63 @@
             @Html.ActionLink("返回列表", "Index", new { userId = Model.UserId }, new { @class = "btn btn-default" })
         </div>
 
+
+@section scripts{
+    
+    <script type="text/javascript">
+
+    function DLItemOnChange(DLItemId,DLItemsId){
+        //alert(DLItemId+":"+DLItemsId);
+        var DLItemsIdVal = $('#'+DLItemsId).val();
+        $('#'+DLItemId).val(DLItemsIdVal);
+    }
+
+    $(document).ready(function(){ 
+
+        $('#DiaryLogDate').datepicker({
+            dateFormat: "yy/mm/dd"
+        });
+
+        var userId = @Model.UserId;
+        var addNewUrl = '@Url.Action( "GetDetailPartialView", "DiaryLogNew")'+"?userId="+userId;
+
+        $.get(addNewUrl, function (template) {
+
+            $("#TextBoxesGroup").append(template);
+            event.preventDefault();
+        });
+
+        $("#addDetailBtn").click(function () {
+            $.get(addNewUrl, function (template) {
+
+                $("#TextBoxesGroup").append(template);
+                event.preventDefault();
+            });
+        });
+
+        $("form").submit(function (e) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AjaxCreate")',
+                data: $("form").serialize(),
+                success: function (result) {
+                    //alert(result);
+                    var date = result.split(",");
+                    if(date[0] === "true")
+                    {
+                        var url = '@Url.Action("Index")';
+                        url = url + "?userId="+@Model.UserId;
+                        window.location.href=url;
+                    }
+                    else
+                    {
+                    }
+                }
+            });
+
+            e.preventDefault();
+        });
+
+    });
+</script>
+    }

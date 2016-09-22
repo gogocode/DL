@@ -57,9 +57,9 @@ namespace DL.Web.Controllers
         public ActionResult Edit(int? id)
         {
 
-            if (id == null)
+            if (id == null && Session["Id"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                id = int.Parse( Session["Id"].ToString());
             }
 
             UserService _userService = new UserService();
