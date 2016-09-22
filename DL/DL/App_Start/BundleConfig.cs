@@ -8,13 +8,14 @@ namespace DL.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.validate*"
+                        ));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
-
-            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                        "~/Scripts/jquery-ui-1.11.4.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/thirdpartyjs").Include(
+                        "~/Scripts/jquery-ui-1.11.4.min.js",
+                        "~/Scripts/flipclock/flipclock.min.js",
+                        "~/Scripts/jquerycookie/jquery.cookie.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
@@ -25,8 +26,11 @@ namespace DL.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/jquery-ui-1.11.4.custom/jquery-ui.min.css",
                       "~/Content/styles.css"));
+
+            bundles.Add(new StyleBundle("~/Content/thirdpartycss").Include(
+                      "~/Content/jquery-ui-1.11.4.custom/jquery-ui.min.css",
+                      "~/Content/flipclock/flipclock.css"));
         }
     }
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="jquery.cookie.js" ></script>
+	<script>
+	$(function(){
+		// 先判斷是否已有 cookie 值
+		// 如果沒有則詢問名字並建立一筆新的 cookie
+		if($.cookie("name")==null){
+			var _hostname=window.location.hostname; //取得網址
+				// 把 _name 跟 1 分別存在記錄中
+				$.cookie("name", _hostname, { expires: 1 ,path:'/'}); //cookie紀錄一天"path:/"為整個網站有效
+                $.cookie("count", 1, { expires: 1 ,path:'/' });//cookie紀錄一天"path:/"為整個網站有效
+				$(".msg").html("歡迎來到"+_hostname + "，你是第1次拜訪本小站。");
+             //var expireDate = new Date();
+   			// expireDate.setTime( expireDate.getTime() + ( 1 * 60 * 1000 ) );//以【毫秒】为单位。这里设置的是1分鐘
+   			// $.cookie("name", _hostname, { expires: expireDate });
+            // $.cookie("count", 1, { expires: expireDate });			
+		}else{
+			// 取出記錄中的 name 跟 count
+			var _hostname = $.cookie("name");
+			var _count = $.cookie("count");
+			$(".msg").html("歡迎來到"+_hostname + "，你是第 " + (++_count) + " 次拜訪本小站。");
+			// 把加 1 之後的 count 寫回記錄中
+            $.cookie("count", _count , { expires: 1 ,path:'/' }); //cookie紀錄一天"path:/"為整個網站有效
+            if(_count==3){
+                alert("提醒您今天是你第三次拜訪網站。");
+            }
+		}
+	});
+	</script>
+	<title>jquerycookie</title>
+</head>
+<body>
+<div class="msg"></div>
+</body>
+</html>

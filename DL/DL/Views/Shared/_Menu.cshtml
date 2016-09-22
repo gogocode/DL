@@ -1,12 +1,35 @@
-﻿@if (Session["Account"] != null){ 
-<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-    <form role="search">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
-        </div>
-    </form>
-    <ul class="nav menu">
+﻿<style>
+    .clock {
+        zoom: 0.5;
+        -moz-transform: scale(0.5);
+    }
+    .punch {
+        zoom: 0.5;
+        -moz-transform: scale(0.5);
+    }
+    .btn{
+        margin-left:10px;
+        margin-top:10px;
+        }
 
+</style>
+
+@if (Session["Account"] != null){ 
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+
+    <button class="btn btn-primary">現在時刻</button>
+    <button class="btn btn-primary" onclick="PunchClick();">打卡</button>
+    <div class="clock" style="margin:10px;"></div>
+
+    
+    @*<div class="punch" style="margin:10px;">
+        <span id="punchTime" style="font-size:21px;font-weight:bold"></span>
+    </div>*@
+
+    <button id="punchTime" class="btn btn-primary" style="background-color:pink"></button>
+    <hr />
+
+    <ul class="nav menu">
         @if (Session["Account"] != null && Session["Account"].ToString() != "9999")
         {
             <li class="parent ">
@@ -43,3 +66,31 @@
     </ul>
 </div><!--/.sidebar-->
 }
+
+<script type="text/javascript">
+    var clock;
+
+	$(document).ready(function() {
+
+	    if ($.cookie("punchTime") != null) {
+	        $("#punchTime").text("打卡時間為 "+$.cookie("punchTime"));
+	    }
+
+		clock = $('.clock').FlipClock({
+			clockFace: 'TwentyFourHourClock'
+		});
+	});
+
+	function PunchClick() {
+	    var expireDate = new Date();
+	    expireDate.setTime(expireDate.getTime() + (12 * 60 * 60 * 1000));//以【毫秒】為單位。這裡設定是1小時，若要設定1分鐘可(1*60*1000)
+	    var punchT = new Date($.now());
+	    var time = punchT.getHours() + ":" + punchT.getMinutes() + ":" + punchT.getSeconds();
+	    //alert(time);
+
+	    $.cookie("punchTime", time, { expires: expireDate });
+	    $("#punchTime").text("打卡時間為 "+time);
+	}
+
+
+</script>
