@@ -3,7 +3,6 @@
 
 @{
     ViewBag.Title = "工作日誌查詢";
-    ViewBag.SubTitle = "輸入查詢條件";
 }
 
 <div class="row">
@@ -13,8 +12,6 @@
     </ol>
 </div>
 <br />
-
-<h4><strong>@ViewBag.SubTitle</strong></h4>
 
 @using (Html.BeginForm("Index", "DiaryLogNew", FormMethod.Post, new { id = "diaryLogFrom", @class = "form-inline", role = "form" }))
 {
