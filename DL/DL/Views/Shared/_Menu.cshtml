@@ -15,18 +15,16 @@
 </style>
 
 @if (Session["Account"] != null){ 
-<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+<div id="sidebar-collapse" class="col-sm-3 col-md-2 col-lg-2 sidebar">
 
     <button class="btn btn-primary">現在時刻</button>
-    <button class="btn btn-primary" onclick="PunchClick();">打卡</button>
+    
     <div class="clock" style="margin:10px;"></div>
 
-    
-    @*<div class="punch" style="margin:10px;">
-        <span id="punchTime" style="font-size:21px;font-weight:bold"></span>
-    </div>*@
-
-    <button id="punchTime" class="btn btn-primary" style="background-color:pink"></button>
+    <div>
+        <button class="btn btn-primary" onclick="PunchClick();">打卡</button>
+    </div>
+    <button id="punchTime" class="btn btn-primary" style="background-color:pink;border-color:pink;"></button>
     <hr />
 
     <ul class="nav menu">
@@ -77,7 +75,8 @@
 	    }
 
 		clock = $('.clock').FlipClock({
-			clockFace: 'TwentyFourHourClock'
+		    clockFace: 'TwentyFourHourClock',
+		    showSeconds: false
 		});
 	});
 
@@ -88,7 +87,7 @@
 	    var time = punchT.getHours() + ":" + punchT.getMinutes() + ":" + punchT.getSeconds();
 	    //alert(time);
 
-	    $.cookie("punchTime", time, { expires: expireDate });
+	    $.cookie("punchTime", time, { expires: expireDate, path: '/' });
 	    $("#punchTime").text("打卡時間為 "+time);
 	}
 

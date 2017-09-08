@@ -260,6 +260,7 @@ namespace DL.Web.Controllers
 
         #region Delete
 
+        [CheckSessionAcitionFilter]
         public ActionResult DeleteADetail(int actdetailNo)
         {
             DiaryLogService _diaryLogService = new DiaryLogService();
@@ -271,6 +272,7 @@ namespace DL.Web.Controllers
 
         #region Detail
 
+        [CheckSessionAcitionFilter]
         public ActionResult Detail(string strDate,int userId)
         {
             //檢查如果userId不等於Session["Id"]，不能進入頁面看別人的。
@@ -303,6 +305,7 @@ namespace DL.Web.Controllers
 
         #endregion
 
+        [CheckSessionAcitionFilter]
         public ActionResult GetDetailPartialView(int userId)
         {
             ViewBag.DiaryLogItems = GetDiaryLogItemSelectItems(userId);
@@ -310,6 +313,7 @@ namespace DL.Web.Controllers
             return PartialView("_DiaryLogDetailPartialView");
         }
 
+        [CheckSessionAcitionFilter]
         public ActionResult JobWeight(int userId)
         {
 
@@ -318,6 +322,7 @@ namespace DL.Web.Controllers
             return View();
         }
 
+        [CheckSessionAcitionFilter]
         public ActionResult GetJobWeightData(string year,string month,int userId)
         {
             JobWeightChart chart = _diaryLogService.FindJobWeightData( year,  month,  userId);
